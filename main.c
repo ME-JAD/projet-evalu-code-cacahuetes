@@ -35,5 +35,6 @@ int main() {
     free(map->image);
     free(map);
 
+
     return 0;
 }
