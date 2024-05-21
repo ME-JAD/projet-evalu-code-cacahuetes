@@ -5,12 +5,12 @@ Shrek *createShrek() {
     newShrek->positionX = 0;
     newShrek->positionY = 0;
 
-    newShrek->image[0][1] = 'O';
-    newShrek->image[1][0] = '/';
-    newShrek->image[1][1] = '|';
-    newShrek->image[1][2] = '\\';
-    newShrek->image[2][0] = '/';
-    newShrek->image[2][2] = '\\';
+    newShrek->image[0][1] = SHREK_SPRITE_HEAD;
+    newShrek->image[1][0] = SHREK_SPRITE_RIGHT;
+    newShrek->image[1][1] = SHREK_SPRITE_BODY;
+    newShrek->image[1][2] = SHREK_SPRITE_LEFT;
+    newShrek->image[2][0] = SHREK_SPRITE_RIGHT;
+    newShrek->image[2][2] = SHREK_SPRITE_LEFT;
 
     for (int i = 0; i < SHREK_HEIGHT; ++i) {
         for (int j = 0; j < SHREK_WIDTH; ++j) {
@@ -24,19 +24,5 @@ Shrek *createShrek() {
     }
 
     return newShrek;
-}
-
-void moveShrek(Shrek *shrek, int widthMap, int heightMap) {
-    shrek->positionX = (shrek->positionX + widthMap) % widthMap;
-    shrek->positionY = (shrek->positionY + heightMap) % heightMap;
-}
-
-void moveShrekDownRight(Shrek *shrek, int widthMap, int heightMap) {
-    if (shrek->positionX < widthMap - SHREK_WIDTH - 1) {
-        shrek->positionX++;
-    }
-    if (shrek->positionY < heightMap - SHREK_HEIGHT - 1) {
-        shrek->positionY++;
-    }
 }
 
