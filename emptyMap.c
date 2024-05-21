@@ -3,7 +3,11 @@
 void displayEmptyMap(Map *map) {
     for (int row = 0; row < map->height; ++row) {
         for (int column = 0; column < map->width; ++column) {
-            if (row == 0 || row == map->height - 1 || column == 0 || column == map->width - 1) {
+            if ((column == 0 || column == map->width - 1) && (row >= map->height / 2 - SHREK_HEIGHT && row <= map->height / 2 + SHREK_HEIGHT)) {
+                map->image[row][column] = EMPTY_MAP_SPRITE;
+            } else if ((row == 0 || row == map->height - 1) && (column >= map->width / 2 - SHREK_WIDTH && column <= map->width / 2 + SHREK_WIDTH)) {
+                map->image[row][column] = EMPTY_MAP_SPRITE;
+            } else if (row == 0 || row == map->height - 1 || column == 0 || column == map->width - 1) {
                 map->image[row][column] = BORDER_MAP_SPRITE;
             } else {
                 map->image[row][column] = EMPTY_MAP_SPRITE;
@@ -28,6 +32,7 @@ void displayEmptyMap(Map *map) {
         printf("\n");
     }
 }
+
 
 Map *createEmptyMap(int width, int height) {
     Map *newMap = (Map *) malloc(sizeof(Map));
