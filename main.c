@@ -7,18 +7,19 @@
 #include "shrek.h"
 #include "move.h"
 
+#define WIDTH_MAP 220
+#define HEIGHT_MAP 70
+
 void clearScreen() {
     printf("\033[H\033[J");
 }
 
 int main() {
-    int widthMap = 220;
-    int heightMap = 70;
-    Map *map = createEmptyMap(widthMap, heightMap);
+    Map *map = createEmptyMap(WIDTH_MAP, HEIGHT_MAP);
     Shrek *shrek = createShrek();
-    putShrekOnMap(map, shrek, (widthMap/2)-1, (heightMap/2)-1);
 
     displayEmptyMap(map);
+    putShrekOnMap(map, shrek, SHREK_WIDTH, HEIGHT_MAP-(SHREK_HEIGHT-1));
 
     char input;
     do {

@@ -1,9 +1,12 @@
 #include "shrek.h"
 
+#define WIDTH_MAP 220
+#define HEIGHT_MAP 70
+
 Shrek *createShrek() {
     Shrek *newShrek = (Shrek *) malloc(sizeof(Shrek));
     newShrek->positionX = 0;
-    newShrek->positionY = 0;
+    newShrek->positionY = WIDTH_MAP*WIDTH_MAP;
 
     newShrek->image[0][1] = SHREK_SPRITE_HEAD;
     newShrek->image[1][0] = SHREK_SPRITE_RIGHT;
@@ -18,7 +21,7 @@ Shrek *createShrek() {
                 newShrek->image[i][j] != '|' &&
                 newShrek->image[i][j] != '/' &&
                 newShrek->image[i][j] != '\\') {
-                newShrek->image[i][j] = ' '; // Empty space
+                newShrek->image[i][j] = ' ';
             }
         }
     }

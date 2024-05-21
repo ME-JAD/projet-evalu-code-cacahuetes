@@ -52,6 +52,6 @@ Map *createEmptyMap(int width, int height) {
 
 void putShrekOnMap(Map *map, Shrek *shrek, int x, int y) {
     map->shrek = shrek;
-    shrek->positionX = x;
-    shrek->positionY = y;
+    map->shrek->positionX = x;
+    map->shrek->positionY = y;
 }

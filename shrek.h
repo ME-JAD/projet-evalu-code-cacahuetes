@@ -20,6 +20,5 @@ typedef struct Shrek {
 } Shrek;
 
 Shrek *createShrek();
-void displayShrek(Shrek *shrek, int widthMap, int heightMap);
 
 #endif //CODE_CACAHUETES_SHREK_H
