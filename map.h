@@ -1,22 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include "plane.h"
 
-#ifndef DOGFIGHT_CIR1_SKY_H
-#define DOGFIGHT_CIR1_SKY_H
-#define EMPTY_MAP_SPRITE '-'
+#include "shrek.h"
+
+#ifndef CODE_CACAHUETES_MAP_H
+#define CODE_CACAHUETES_MAP_H
+
+#define WIDTH_MAP 220
+#define HEIGHT_MAP 70
+
+#define MAP_SPRITE ' '
+#define BORDER_MAP_SPRITE 'X'
 
 typedef struct Map {
     int width;
     int height;
-    //Plane *plane;
     char **image;
-} Map;
+    Shrek *shrek;
+}Map;
 
-void displayMap(Map map);
+void displayMap(Map *map);
 
 Map *createMap(int width, int height);
 
-//void putPlaneOnMap(Map *map, Plane *plane, int x, int y);
+Map *loadMapFromFile(const char *filename, int *startX, int *startY);
 
-#endif //DOGFIGHT_CIR1_SKY_H
+void putShrekOnMap(Map *map, Shrek *shrek, int x, int y);
+
+void updateMapWithShrek(Map *map, Shrek *shrek, char direction);
+
+#endif //CODE_CACAHUETES_MAP_H

@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include "shrek.h"
-#include "emptyMap.h"
+#include "map.h"
 
 #ifndef CODE_CACAHUETES_MOVE_H
 #define CODE_CACAHUETES_MOVE_H

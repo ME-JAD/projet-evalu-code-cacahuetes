@@ -9,18 +9,18 @@
 #define EMPTY_MAP_SPRITE ' '
 #define BORDER_MAP_SPRITE 'X'
 
-typedef struct Map {
+typedef struct EmptyMap {
     int width;
     int height;
     char **image;
     Shrek *shrek;
-}Map;
+} EmptyMap;
 
-void displayEmptyMap(Map *map);
+void displayEmptyMap(EmptyMap *map);
 
-Map *createEmptyMap(int width, int height);
+EmptyMap *createEmptyMap(int width, int height);
 
-void putShrekOnMap(Map *map, Shrek *shrek, int x,int y);
+void putShrekOnEmptyMap(EmptyMap *map, Shrek *shrek, int x,int y);
 
 
 

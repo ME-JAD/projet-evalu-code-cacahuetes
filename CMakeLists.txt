@@ -8,5 +8,7 @@ add_executable(Code-Cacahuetes main.c
         shrek.c
         move.h
         move.c
+        map.h
+        map.c
 
 )
