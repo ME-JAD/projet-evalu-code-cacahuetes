@@ -1,7 +1,6 @@
 #include "move.h"
 #include "map.h"
 
-
 void moveShrekDownRight(Shrek *shrek, int widthMap, int heightMap) {
     if (shrek->positionX < widthMap - SHREK_WIDTH - 1) {
         shrek->positionX++;
@@ -53,4 +52,3 @@ void moveShrek(Map *map, char direction) {
 
     fflush(stdout);
 }
-

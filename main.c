@@ -11,15 +11,25 @@ void clearScreen() {
 }
 
 int main() {
-    const char *filename = "C:\\Users\\agath\\Documents\\GitHub\\Code-Cacahuetes\\map1.txt"; //A ADAPTER !!
-    int startX, startY;
-    Map *map = loadMapFromFile(filename, &startX, &startY);
+    const char *filenames[] = {
+            "C:\\Users\\agath\\Documents\\GitHub\\Code-Cacahuetes\\map1.txt",
+            "C:\\Users\\agath\\Documents\\GitHub\\Code-Cacahuetes\\map2.txt",
+            "C:\\Users\\agath\\Documents\\GitHub\\Code-Cacahuetes\\map3.txt"
+    };
+    int currentMapIndex = 0;
+
+    int startX, startY, flagX, flagY;
+    Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY);
     if (!map) {
         return 1;
     }
 
     Shrek *shrek = createShrek();
-    putShrekOnMap(map, shrek, startX, startY);
+    int centeredX = startX - SHREK_WIDTH / 2;
+    int centeredY = startY - SHREK_HEIGHT / 2;
+    putShrekOnMap(map, shrek, centeredX, centeredY);
+    map->flagX = flagX;
+    map->flagY = flagY;
 
     clearScreen();
     displayMap(map);
@@ -31,6 +41,16 @@ int main() {
             break;
         }
         updateMapWithShrek(map, shrek, input);
+
+        if (isLevelComplete(map)) {
+            currentMapIndex++;
+            if (currentMapIndex < sizeof(filenames) / sizeof(filenames[0])) {
+                loadNextMap(&map, shrek, filenames[currentMapIndex]);
+            } else {
+                printf("\nCongratulations! \n You've completed all levels! \n Shrek is now happy !\n");
+                break;
+            }
+        }
     } while (1);
 
     free(shrek);

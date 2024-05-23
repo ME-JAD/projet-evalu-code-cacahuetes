@@ -5,7 +5,7 @@
 
 Shrek *createShrek() {
     Shrek *newShrek = (Shrek *) malloc(sizeof(Shrek));
-    newShrek->positionX = 0;
+    newShrek->positionX = 0 ;
     newShrek->positionY = WIDTH_MAP*WIDTH_MAP;
 
     newShrek->image[0][1] = SHREK_SPRITE_HEAD;

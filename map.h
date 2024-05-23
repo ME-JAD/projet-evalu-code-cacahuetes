@@ -17,16 +17,22 @@ typedef struct Map {
     int height;
     char **image;
     Shrek *shrek;
+    int flagX;
+    int flagY;
 }Map;
 
 void displayMap(Map *map);
 
 Map *createMap(int width, int height);
 
-Map *loadMapFromFile(const char *filename, int *startX, int *startY);
+Map *loadMapFromFile(const char *filename, int *startX, int *startY, int *flagX, int *flagY);
 
 void putShrekOnMap(Map *map, Shrek *shrek, int x, int y);
 
 void updateMapWithShrek(Map *map, Shrek *shrek, char direction);
+
+int isLevelComplete(Map *map);
+
+void loadNextMap(Map **map, Shrek *shrek, const char *filename);
 
 #endif //CODE_CACAHUETES_MAP_H
