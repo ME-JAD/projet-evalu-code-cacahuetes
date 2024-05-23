@@ -1,6 +1,6 @@
 #include "emptyMap.h"
 
-void displayEmptyMap(Map *map) {
+void displayEmptyMap(EmptyMap *map) {
     for (int row = 0; row < map->height; ++row) {
         for (int column = 0; column < map->width; ++column) {
             if ((column == 0 || column == map->width - 1) && (row >= map->height / 2 - SHREK_HEIGHT && row <= map->height / 2 + SHREK_HEIGHT)) {
@@ -34,8 +34,8 @@ void displayEmptyMap(Map *map) {
 }
 
 
-Map *createEmptyMap(int width, int height) {
-    Map *newMap = (Map *) malloc(sizeof(Map));
+EmptyMap *createEmptyMap(int width, int height) {
+    EmptyMap *newMap = (EmptyMap *) malloc(sizeof(EmptyMap));
     newMap->height = height;
     newMap->width = width;
     newMap->image = (char **) malloc(height * sizeof(char *));
@@ -50,8 +50,8 @@ Map *createEmptyMap(int width, int height) {
     return newMap;
 }
 
-void putShrekOnMap(Map *map, Shrek *shrek, int x, int y) {
+void putShrekOnEmptyMap(EmptyMap *map, Shrek *shrek, int x, int y) {
     map->shrek = shrek;
-    shrek->positionX = x;
-    shrek->positionY = y;
+    map->shrek->positionX = x;
+    map->shrek->positionY = y;
 }
