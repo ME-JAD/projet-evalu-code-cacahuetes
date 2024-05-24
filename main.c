@@ -5,12 +5,21 @@
 #include "shrek.h"
 #include "move.h"
 #include "map.h"
+#include "menu.h"
 
 void clearScreen() {
     printf("\033[H\033[J");
 }
 
 int main() {
+    displayMenu();
+    char menuSelection = getMenuSelection();
+
+    if (menuSelection == '2') {
+        printf("\nExiting the game...\n");
+        return 0;
+    }
+
     const char *filenames[] = {
             "C:\\Users\\agath\\Documents\\GitHub\\Code-Cacahuetes\\map1.txt",
             "C:\\Users\\agath\\Documents\\GitHub\\Code-Cacahuetes\\map2.txt",
