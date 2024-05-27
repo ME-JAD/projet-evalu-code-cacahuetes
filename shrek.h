@@ -14,8 +14,8 @@
 #define SHREK_HEIGHT 3
 
 typedef struct Shrek {
-    int positionX;
-    int positionY;
+    unsigned int positionX;
+    unsigned int positionY;
     char image[SHREK_WIDTH][SHREK_HEIGHT];
 } Shrek;
 
