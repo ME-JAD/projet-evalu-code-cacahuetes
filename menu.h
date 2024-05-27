@@ -3,6 +3,10 @@
 
 void displayMenu();
 
+void displayVictoryMenu();
+
+void displayDefeatMenu();
+
 char getMenuSelection();
 
 void loadMenuFromFile(const char *filename);
