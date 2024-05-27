@@ -17,15 +17,15 @@ typedef struct Map {
     int height;
     char **image;
     Shrek *shrek;
-    int flagX;
-    int flagY;
+    unsigned int flagX;
+    unsigned int flagY;
 }Map;
 
 void displayMap(Map *map);
 
 Map *createMap(int width, int height);
 
-Map *loadMapFromFile(const char *filename, int *startX, int *startY, int *flagX, int *flagY);
+Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *startY, unsigned int *flagX, unsigned int *flagY);
 
 void putShrekOnMap(Map *map, Shrek *shrek, int x, int y);
 

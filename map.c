@@ -29,7 +29,7 @@ Map *createMap(int width, int height) {
     return newMap;
 }
 
-Map *loadMapFromFile(const char *filename, int *startX, int *startY, int *flagX, int *flagY) {
+Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *startY, unsigned int *flagX, unsigned int *flagY) {
     FILE *file = fopen(filename, "r");
     if (!file) {
         perror("Failed to open map file");

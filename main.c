@@ -59,7 +59,11 @@ int main() {
             if (currentMapIndex < sizeof(filenames) / sizeof(filenames[0])) {
                 loadNextMap(&map, shrek, filenames[currentMapIndex]);
             } else {
+
+                printf("\n Congratulations! \n You've completed all levels! \n Shrek is now happy !\n");
+
                 displayVictoryMenu();
+
                 break;
             }
         }
