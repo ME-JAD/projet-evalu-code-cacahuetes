@@ -12,9 +12,9 @@ void clearScreen() {
 
 int main() {
     const char *filenames[] = {
-            "C:\\Users\\agath\\Documents\\GitHub\\Code-Cacahuetes\\map1.txt",
-            "C:\\Users\\agath\\Documents\\GitHub\\Code-Cacahuetes\\map2.txt",
-            "C:\\Users\\agath\\Documents\\GitHub\\Code-Cacahuetes\\map3.txt"
+            "../map1.txt",
+            "../map2.txt",
+            "../map3.txt"
     };
     int currentMapIndex = 0;
 
@@ -47,7 +47,7 @@ int main() {
             if (currentMapIndex < sizeof(filenames) / sizeof(filenames[0])) {
                 loadNextMap(&map, shrek, filenames[currentMapIndex]);
             } else {
-                printf("\nCongratulations! \n You've completed all levels! \n Shrek is now happy !\n");
+                printf("\n Congratulations! \n You've completed all levels! \n Shrek is now happy !\n");
                 break;
             }
         }
