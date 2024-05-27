@@ -30,6 +30,14 @@ char getMenuSelection() {
 }
 
 void displayMenu() {
-    const char *menuFilename = "C:\\Users\\agath\\Documents\\GitHub\\Code-Cacahuetes\\menu.txt";
+    const char *menuFilename = "../menu.txt";
+    loadMenuFromFile(menuFilename);
+}
+void displayVictoryMenu() {
+    const char *menuFilename = "../victory.txt";
+    loadMenuFromFile(menuFilename);
+}
+void displayDefeatMenu() {
+    const char *menuFilename = "../defeat.txt";
     loadMenuFromFile(menuFilename);
 }
