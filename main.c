@@ -47,6 +47,7 @@ int main() {
     displayMap(map);
 
     char input;
+
     do {
         input = _getch();
         if (input == 'W' || input == 'w') {
