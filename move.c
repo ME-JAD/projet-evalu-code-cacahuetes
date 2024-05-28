@@ -2,10 +2,10 @@
 #include "map.h"
 
 void moveShrekDownRight(Shrek *shrek, int widthMap, int heightMap) {
-    if (shrek->positionX < widthMap - SHREK_WIDTH - 1) {
+    if (shrek->positionX < widthMap - SPRITE_WIDTH - 1) {
         shrek->positionX++;
     }
-    if (shrek->positionY < heightMap - SHREK_HEIGHT - 1) {
+    if (shrek->positionY < heightMap - SPRITE_HEIGHT - 1) {
         shrek->positionY++;
     }
 }
@@ -35,8 +35,8 @@ void moveShrek(Map *map, char direction) {
             return;
     }
 
-    for (int row = 0; row < SHREK_HEIGHT; row++) {
-        for (int col = 0; col < SHREK_WIDTH; col++) {
+    for (int row = 0; row < SPRITE_HEIGHT; row++) {
+        for (int col = 0; col < SPRITE_WIDTH; col++) {
             printf("\033[%d;%dH ", map->shrek->positionY + row + 1, map->shrek->positionX + col + 1);
         }
     }
@@ -44,9 +44,9 @@ void moveShrek(Map *map, char direction) {
     map->shrek->positionX += deltaX * CELL_SIZE;
     map->shrek->positionY += deltaY * CELL_SIZE;
 
-    for (int row = 0; row < SHREK_HEIGHT; row++) {
-        for (int col = 0; col < SHREK_WIDTH; col++) {
-            printf("\033[%d;%dH%c", map->shrek->positionY + row + 1, map->shrek->positionX + col + 1, map->shrek->image[row][col]);
+    for (int row = 0; row < SPRITE_HEIGHT; row++) {
+        for (int col = 0; col < SPRITE_WIDTH; col++) {
+            printf("\033[%d;%dH%c", map->shrek->positionY + row + 1, map->shrek->positionX + col + 1, map->shrek->image.image[row][col]);
         }
     }
 
