@@ -12,14 +12,13 @@
 
 #define PLANE_SIZE 20
 #define PLANE_SPRITE 20
-typedef struct Donkey{
-    int positionX;
-    int positionY;
+typedef struct {
+    unsigned int positionX;
+    unsigned int positionY;
     bool collision;
     Sprite image;
+} Donkey;
 
-}Donkey;
-
-Donkey createDonkey(int x, int y);
+Donkey *createDonkey();
 
 #endif //CODE_CACAHUETES_ANE_H
