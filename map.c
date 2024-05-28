@@ -84,17 +84,17 @@ void putShrekOnMap(Map *map, Shrek *shrek, int x, int y) {
 }
 
 void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
-    for (int row = 0; row < SHREK_HEIGHT; row++) {
-        for (int col = 0; col < SHREK_WIDTH; col++) {
+    for (int row = 0; row < SPRITE_HEIGHT; row++) {
+        for (int col = 0; col < SPRITE_WIDTH; col++) {
             printf("\033[%d;%dH ", shrek->positionY + row + 1, shrek->positionX + col + 1);
         }
     }
 
     moveShrek(map, direction);
 
-    for (int row = 0; row < SHREK_HEIGHT; row++) {
-        for (int col = 0; col < SHREK_WIDTH; col++) {
-            printf("\033[%d;%dH%c", shrek->positionY + row + 1, shrek->positionX + col + 1, shrek->image[row][col]);
+    for (int row = 0; row < SPRITE_HEIGHT; row++) {
+        for (int col = 0; col < SPRITE_WIDTH; col++) {
+            printf("\033[%d;%dH%c", shrek->positionY + row + 1, shrek->positionX + col + 1, shrek->image.image[row][col]);
         }
     }
 
@@ -102,8 +102,8 @@ void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
 }
 
 int isLevelComplete(Map *map) {
-    for (int row = 0; row < SHREK_HEIGHT; row++) {
-        for (int col = 0; col < SHREK_WIDTH; col++) {
+    for (int row = 0; row < SPRITE_HEIGHT; row++) {
+        for (int col = 0; col < SPRITE_WIDTH; col++) {
             int shrekX = map->shrek->positionX + col;
             int shrekY = map->shrek->positionY + row;
 
@@ -130,8 +130,8 @@ void loadNextMap(Map **map, Shrek *shrek, const char *filename) {
     newMap->flagX = flagX;
     newMap->flagY = flagY;
 
-    int centeredX = startX - SHREK_WIDTH / 2;
-    int centeredY = startY - SHREK_HEIGHT / 2;
+    int centeredX = startX - SPRITE_WIDTH / 2;
+    int centeredY = startY - SPRITE_HEIGHT / 2;
     putShrekOnMap(newMap, shrek, centeredX, centeredY);
 
     printf("\033[H\033[J");

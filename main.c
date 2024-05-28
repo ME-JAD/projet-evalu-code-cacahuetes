@@ -37,8 +37,8 @@ int main() {
     }
 
     Shrek *shrek = createShrek();
-    int centeredX = startX - SHREK_WIDTH / 2;
-    int centeredY = startY - SHREK_HEIGHT / 2;
+    int centeredX = startX - SPRITE_WIDTH / 2;
+    int centeredY = startY - SPRITE_HEIGHT / 2;
     putShrekOnMap(map, shrek, centeredX, centeredY);
     map->flagX = flagX;
     map->flagY = flagY;
