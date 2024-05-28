@@ -41,8 +41,8 @@ void moveShrek(Map *map, char direction) {
         }
     }
 
-    map->shrek->positionX += deltaX;
-    map->shrek->positionY += deltaY;
+    map->shrek->positionX += deltaX * CELL_SIZE;
+    map->shrek->positionY += deltaY * CELL_SIZE;
 
     for (int row = 0; row < SHREK_HEIGHT; row++) {
         for (int col = 0; col < SHREK_WIDTH; col++) {
