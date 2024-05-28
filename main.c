@@ -5,12 +5,24 @@
 #include "shrek.h"
 #include "move.h"
 #include "map.h"
+#include "menu.h"
 
 void clearScreen() {
     printf("\033[H\033[J");
 }
 
 int main() {
+    system("chcp 65001");
+
+    displayMenu();
+
+    char menuSelection = getMenuSelection();
+
+    if (menuSelection == '2') {
+        printf("\nExiting the game...\n");
+        return 0;
+    }
+
     const char *filenames[] = {
             "../map1.txt",
             "../map2.txt",
@@ -47,7 +59,7 @@ int main() {
             if (currentMapIndex < sizeof(filenames) / sizeof(filenames[0])) {
                 loadNextMap(&map, shrek, filenames[currentMapIndex]);
             } else {
-                printf("\n Congratulations! \n You've completed all levels! \n Shrek is now happy!\n");
+                displayVictoryMenu();
                 break;
             }
         }
