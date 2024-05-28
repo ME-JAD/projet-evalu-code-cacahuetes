@@ -18,6 +18,9 @@
 #define MAP_SPRITE ' '
 #define BORDER_MAP_SPRITE 'X'
 
+#define FLAG_SPRITE_SIZE 5
+
+
 typedef struct Map {
     int width;
     int height;
@@ -26,6 +29,8 @@ typedef struct Map {
     unsigned int flagX;
     unsigned int flagY;
 } Map;
+
+extern const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE];
 
 void displayMap(Map *map);
 
@@ -40,6 +45,8 @@ void updateMapWithShrek(Map *map, Shrek *shrek, char direction);
 int isLevelComplete(Map *map);
 
 void loadNextMap(Map **map, Shrek *shrek, const char *filename);
+
+void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY);
 
 #endif //CODE_CACAHUETES_MAP_H
 

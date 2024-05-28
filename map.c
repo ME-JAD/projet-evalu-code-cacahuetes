@@ -4,7 +4,23 @@
 #include <stdlib.h>
 #include <string.h>
 
+const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE] = {
+        {'|', '-', '-', '-', '-'},
+        {'|', ' ',' ', ' ', '|'},
+        {'|', '-', '-', '-', '-'},
+        {'|', ' ', ' ', ' ', ' '},
+        {'|', ' ', ' ', ' ', ' '}
+};
+
 void displayMap(Map *map) {
+
+    for (int row = 0; row < FLAG_SPRITE_SIZE; ++row) {
+        for (int col = 0; col < FLAG_SPRITE_SIZE; ++col) {
+            printf("%c", FLAG_SPRITE[row][col]);
+        }
+        printf("\n");
+    }
+
     for (int row = 0; row < map->height; ++row) {
         for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
             for (int col = 0; col < map->width; ++col) {
@@ -79,6 +95,7 @@ Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *s
             if (line[col] == '^') {
                 *flagX = col;
                 *flagY = row;
+                placeFlagOnMap(map, *flagX, *flagY);
             }
         }
     }
@@ -145,4 +162,12 @@ void loadNextMap(Map **map, Shrek *shrek, const char *filename) {
 
     printf("\033[H\033[J");
     displayMap(newMap);
+}
+
+void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY) {
+    for (int row = 0; row < FLAG_SPRITE_SIZE; ++row) {
+        for (int col = 0; col < FLAG_SPRITE_SIZE; ++col) {
+            map->cells[flagY][flagX][row * CELL_SIZE + col] = FLAG_SPRITE[row][col];
+        }
+    }
 }
