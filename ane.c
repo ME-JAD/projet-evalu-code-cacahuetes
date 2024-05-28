@@ -8,6 +8,7 @@ Donkey *createDonkey() {
 
     newDonkey->positionX = 0;
     newDonkey->positionY = WIDTH_MAP * WIDTH_MAP;
+    newDonkey->collision = false;
 
     // Initialisation du sprite de Shrek
     for (int i = 0; i < SPRITE_HEIGHT; ++i) {
@@ -20,12 +21,9 @@ Donkey *createDonkey() {
     newDonkey->image.image[0][2] = DONKEY_SPRITE_HEAD;
     newDonkey->image.image[1][0] = DONKEY_SPRITE_NOSE;
     newDonkey->image.image[1][1] = DONKEY_SPRITE_BODY_L;
-    newDonkey->image.image[1][2] = ' ';
     newDonkey->image.image[1][3] = DONKEY_SPRITE_BODY_R;
     newDonkey->image.image[1][4] = DONKEY_SPRITE_TAIL;
-    newDonkey->image.image[2][1] = ' ';
     newDonkey->image.image[2][2] = DONKEY_SPRITE_PAW;
-    newDonkey->image.image[2][3] = ' ';
     newDonkey->image.image[2][4] = DONKEY_SPRITE_PAW;
 
 

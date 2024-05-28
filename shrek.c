@@ -23,11 +23,9 @@ Shrek *createShrek() {
     newShrek->image.image[0][3] = SHREK_SPRITE_HORN;
     newShrek->image.image[1][0] = SHREK_SPRITE_RIGHT;
     newShrek->image.image[1][1] = SHREK_SPRITE_BODY;
-    newShrek->image.image[1][2] = ' ';
     newShrek->image.image[1][3] = SHREK_SPRITE_ARMS_CLOSE;
     newShrek->image.image[1][4] = SHREK_SPRITE_LEFT;
     newShrek->image.image[2][1] = SHREK_SPRITE_RIGHT;
-    newShrek->image.image[2][2] = ' ';
     newShrek->image.image[2][3] = SHREK_SPRITE_LEFT;
 
 
