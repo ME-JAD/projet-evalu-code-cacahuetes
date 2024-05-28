@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "shrek.h"
+#include "ane.h"
 
 #ifndef CODE_CACAHUETES_MAP_H
 #define CODE_CACAHUETES_MAP_H

@@ -12,5 +12,7 @@ add_executable(Code-Cacahuetes main.c
         menu.c
         menu.h
         sprite.h
+        gingy.c
+        gingy.h
 
 )
