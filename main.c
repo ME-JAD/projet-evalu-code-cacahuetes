@@ -3,6 +3,7 @@
 #include <conio.h>
 
 #include "shrek.h"
+#include "ane.h"
 #include "move.h"
 #include "map.h"
 #include "menu.h"
