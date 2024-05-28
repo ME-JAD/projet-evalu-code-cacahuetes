@@ -5,11 +5,6 @@
 #ifndef CODE_CACAHUETES_ANE_H
 #define CODE_CACAHUETES_ANE_H
 
-#define DONKEY_SPRITE_HEAD 'O'
-#define DONKEY_SPRITE_BODY '|'
-#define DONKEY_SPRITE_RIGHT '/'
-#define DONKEY_SPRITE_LEFT '\\'
-
 #define PLANE_SIZE 20
 #define PLANE_SPRITE 20
 typedef struct {
