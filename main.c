@@ -18,15 +18,15 @@ int main() {
     };
     int currentMapIndex = 0;
 
-    int startX, startY, flagX, flagY;
+    unsigned int startX, startY, flagX, flagY;
     Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY);
     if (!map) {
         return 1;
     }
 
     Shrek *shrek = createShrek();
-    int centeredX = startX - SHREK_WIDTH / 2;
-    int centeredY = startY - SHREK_HEIGHT / 2;
+    int centeredX = startX;
+    int centeredY = startY;
     putShrekOnMap(map, shrek, centeredX, centeredY);
     map->flagX = flagX;
     map->flagY = flagY;
@@ -47,7 +47,7 @@ int main() {
             if (currentMapIndex < sizeof(filenames) / sizeof(filenames[0])) {
                 loadNextMap(&map, shrek, filenames[currentMapIndex]);
             } else {
-                printf("\n Congratulations! \n You've completed all levels! \n Shrek is now happy !\n");
+                printf("\n Congratulations! \n You've completed all levels! \n Shrek is now happy!\n");
                 break;
             }
         }
@@ -55,8 +55,12 @@ int main() {
 
     free(shrek);
     for (int i = 0; i < map->height; ++i) {
-        free(map->image[i]);
+        for (int j = 0; j < map->width; ++j) {
+            free(map->cells[i][j]);
+        }
+        free(map->cells[i]);
     }
+    free(map->cells);
     free(map);
 
     return 0;
