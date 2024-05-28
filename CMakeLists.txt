@@ -4,7 +4,6 @@ project(Code-Cacahuetes)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(Code-Cacahuetes main.c
-        emptyMap.c
         shrek.c
         move.h
         move.c
@@ -12,6 +11,4 @@ add_executable(Code-Cacahuetes main.c
         map.c
         menu.c
         menu.h
-        sprites.h
-
 )
