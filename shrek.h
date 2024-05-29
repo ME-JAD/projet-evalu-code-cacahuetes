@@ -13,10 +13,6 @@
 #define SHREK_SPRITE_LEFT '\\'
 
 
-
-#define SHREK_WIDTH 5
-#define SHREK_HEIGHT 5
-
 typedef struct Shrek {
     unsigned int positionX;
     unsigned int positionY;
