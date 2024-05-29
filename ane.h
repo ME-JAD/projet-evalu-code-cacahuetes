@@ -15,13 +15,13 @@
 #define DONKEY_SPRITE_PAW '|'
 
 typedef struct Donkey{
-    int positionX;
-    int positionY;
+    unsigned int positionX;
+    unsigned int positionY;
     bool collision;
     Sprite image;
 
 }Donkey;
 
-Donkey *createDonkey();
+Donkey *createDonkey(unsigned int x, unsigned int y);
 
 #endif //CODE_CACAHUETES_ANE_H

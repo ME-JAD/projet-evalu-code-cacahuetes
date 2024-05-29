@@ -98,6 +98,18 @@ Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *s
                 putShrekOnMap(map, map->shrek, col, row);
             }
 
+            /*if (line[col] == 'A') {
+                createDonkey(row, col);
+            }
+
+            if (line[col] == 'E') {
+                createChild();
+            }
+
+            if (line[col] == 'P') {
+                createGingy();
+            }*/
+
             if (line[col] == '^') {
                 *flagX = col;
                 *flagY = row;
