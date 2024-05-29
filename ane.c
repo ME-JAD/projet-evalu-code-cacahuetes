@@ -1,14 +1,14 @@
 #include "ane.h"
 //uwu
 
-Donkey *createDonkey() {
+Donkey *createDonkey(unsigned int x, unsigned int y) {
     Donkey *newDonkey = (Donkey *) malloc(sizeof(Donkey));
     if (newDonkey == NULL) {
         return NULL; // Gestion de l'erreur d'allocation mémoire
     }
 
-    newDonkey->positionX = 0;
-    newDonkey->positionY = WIDTH_MAP * WIDTH_MAP;
+    newDonkey->positionX = x;
+    newDonkey->positionY = y;
     newDonkey->collision = false;
 
     // Initialisation du sprite de Shrek
@@ -18,14 +18,14 @@ Donkey *createDonkey() {
         }
     }
 
-    newDonkey->image.image[0][1] = DONKEY_SPRITE_HEAD;
-    newDonkey->image.image[0][2] = DONKEY_SPRITE_HEAD;
-    newDonkey->image.image[1][0] = DONKEY_SPRITE_NOSE;
-    newDonkey->image.image[1][1] = DONKEY_SPRITE_BODY_L;
-    newDonkey->image.image[1][3] = DONKEY_SPRITE_BODY_R;
-    newDonkey->image.image[1][4] = DONKEY_SPRITE_TAIL;
-    newDonkey->image.image[2][2] = DONKEY_SPRITE_PAW;
-    newDonkey->image.image[2][4] = DONKEY_SPRITE_PAW;
+    newDonkey->image.image[1][0] = DONKEY_SPRITE_HEAD;
+    newDonkey->image.image[1][1] = DONKEY_SPRITE_HEAD;
+    newDonkey->image.image[2][0] = DONKEY_SPRITE_NOSE;
+    newDonkey->image.image[2][1] = DONKEY_SPRITE_BODY_L;
+    newDonkey->image.image[2][3] = DONKEY_SPRITE_BODY_R;
+    newDonkey->image.image[2][4] = DONKEY_SPRITE_TAIL;
+    newDonkey->image.image[3][1] = DONKEY_SPRITE_PAW;
+    newDonkey->image.image[3][3] = DONKEY_SPRITE_PAW;
 
 
     return newDonkey;
