@@ -6,32 +6,37 @@
 
 const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE] = {
         {'|', '-', '-', '-', '-'},
-        {'|', ' ',' ', ' ', '|'},
+        {'|', ' ', ' ', ' ', '|'},
         {'|', '-', '-', '-', '-'},
         {'|', ' ', ' ', ' ', ' '},
         {'|', ' ', ' ', ' ', ' '}
 };
 
 void displayMap(Map *map) {
-
-    for (int row = 0; row < FLAG_SPRITE_SIZE; ++row) {
-        for (int col = 0; col < FLAG_SPRITE_SIZE; ++col) {
-            printf("%c", FLAG_SPRITE[row][col]);
-        }
-        printf("\n");
-    }
-
     for (int row = 0; row < map->height; ++row) {
         for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
             for (int col = 0; col < map->width; ++col) {
                 for (int cell_col = 0; cell_col < CELL_SIZE; ++cell_col) {
-                    printf("%c", map->cells[row][col][cell_row * CELL_SIZE + cell_col]);
+                    int mapX = col * CELL_SIZE + cell_col;
+                    int mapY = row * CELL_SIZE + cell_row;
+
+                    int shrekX = map->shrek->positionX;
+                    int shrekY = map->shrek->positionY;
+                    if (mapX >= shrekX && mapX < shrekX + SPRITE_WIDTH &&
+                        mapY >= shrekY && mapY < shrekY + SPRITE_HEIGHT) {
+                        int spriteRow = mapY - shrekY;
+                        int spriteCol = mapX - shrekX;
+                        printf("%c", map->shrek->image.image[spriteRow][spriteCol]);
+                    } else {
+                        printf("%c", map->cells[row][col][cell_row * CELL_SIZE + cell_col]);
+                    }
                 }
             }
             printf("\n");
         }
     }
 }
+
 
 Map *createMap(int width, int height) {
     Map *newMap = (Map *) malloc(sizeof(Map));
@@ -90,6 +95,7 @@ Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *s
                         map->cells[row][col][cell_row * CELL_SIZE + cell_col] = ' ';
                     }
                 }
+                putShrekOnMap(map, map->shrek, col, row);
             }
 
             if (line[col] == '^') {
@@ -104,6 +110,7 @@ Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *s
     return map;
 }
 
+
 void putShrekOnMap(Map *map, Shrek *shrek, int x, int y) {
     map->shrek = shrek;
     map->shrek->positionX = x * CELL_SIZE;
@@ -111,6 +118,8 @@ void putShrekOnMap(Map *map, Shrek *shrek, int x, int y) {
 }
 
 void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
+    printf("\033[?25l");
+
     for (int row = 0; row < SPRITE_HEIGHT; ++row) {
         for (int col = 0; col < SPRITE_WIDTH; ++col) {
             printf("\033[%d;%dH ", shrek->positionY + row + 1, shrek->positionX + col + 1);
@@ -124,6 +133,9 @@ void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
             printf("\033[%d;%dH%c", shrek->positionY + row + 1, shrek->positionX + col + 1, shrek->image.image[row][col]);
         }
     }
+
+    printf("\033[%d;%dH", map->height * CELL_SIZE + 1, 1);
+    printf("\033[?25h");
 
     fflush(stdout);
 }
