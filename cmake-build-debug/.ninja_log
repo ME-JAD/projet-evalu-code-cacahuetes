@@ -1,0 +1,25 @@
+# ninja log v5
+363	912	7386061912339753	Code-Cacahuetes.exe	767a2daa9f9ca64d
+56	327	7386061906486555	CMakeFiles/Code-Cacahuetes.dir/shrek.c.obj	eb77afbb45d67632
+94	336	7386061906569644	CMakeFiles/Code-Cacahuetes.dir/gingy.c.obj	4f8aaa0f5f142299
+72	361	7386061906849638	CMakeFiles/Code-Cacahuetes.dir/map.c.obj	da2e6a6332c0b812
+45	341	7386061906664807	CMakeFiles/Code-Cacahuetes.dir/main.c.obj	d3fd958514fe585b
+15	563	7386073395371439	build.ninja	6dcd22ed80a2c7f0
+82	363	7386061906859766	CMakeFiles/Code-Cacahuetes.dir/menu.c.obj	d690fcc695b843d5
+63	329	7386061906486555	CMakeFiles/Code-Cacahuetes.dir/move.c.obj	545d001a53a4ecb0
+119	352	7386079896720796	CMakeFiles/Code-Cacahuetes.dir/children.c.obj	dda9ba58a218b63c
+65	358	7386079896836522	CMakeFiles/Code-Cacahuetes.dir/move.c.obj	545d001a53a4ecb0
+57	362	7386079896772685	CMakeFiles/Code-Cacahuetes.dir/shrek.c.obj	eb77afbb45d67632
+94	438	7386079897355423	CMakeFiles/Code-Cacahuetes.dir/gingy.c.obj	4f8aaa0f5f142299
+79	440	7386079897548240	CMakeFiles/Code-Cacahuetes.dir/menu.c.obj	d690fcc695b843d5
+73	464	7386079897877889	CMakeFiles/Code-Cacahuetes.dir/map.c.obj	da2e6a6332c0b812
+52	472	7386079897993438	CMakeFiles/Code-Cacahuetes.dir/main.c.obj	d3fd958514fe585b
+472	945	7386079902615487	Code-Cacahuetes.exe	a41dcca3419d2fdd
+45	261	7386080379679302	CMakeFiles/Code-Cacahuetes.dir/shrek.c.obj	eb77afbb45d67632
+37	367	7386080380079556	CMakeFiles/Code-Cacahuetes.dir/main.c.obj	d3fd958514fe585b
+51	368	7386080380226824	CMakeFiles/Code-Cacahuetes.dir/move.c.obj	545d001a53a4ecb0
+66	369	7386080380308940	CMakeFiles/Code-Cacahuetes.dir/menu.c.obj	d690fcc695b843d5
+70	370	7386080380681209	CMakeFiles/Code-Cacahuetes.dir/gingy.c.obj	4f8aaa0f5f142299
+80	371	7386080380789457	CMakeFiles/Code-Cacahuetes.dir/children.c.obj	dda9ba58a218b63c
+57	383	7386080380946735	CMakeFiles/Code-Cacahuetes.dir/map.c.obj	da2e6a6332c0b812
+383	538	7386080382454193	Code-Cacahuetes.exe	a41dcca3419d2fdd
