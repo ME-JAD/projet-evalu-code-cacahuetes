@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-//uwu
-
 #include "shrek.h"
 #include "ane.h"
 #include "gingy.h"
@@ -10,18 +8,13 @@
 #ifndef CODE_CACAHUETES_MAP_H
 #define CODE_CACAHUETES_MAP_H
 
-
 #define WIDTH_MAP 380
 #define HEIGHT_MAP 120
 
 #define CELL_SIZE 5
-
-#define NUMBER_OF_CELL_IN_MAP_WITDH = (WIDTH_MAP / CELL_SIZE)
-#define NUMBER_OF_CELL_IN_MAP_HEIGHT = (HEIGHT_MAP / CELL_SIZE)
-
-#define MAP_SPRITE ' '
-#define BORDER_MAP_SPRITE 'X'
-
+#define SPRITE_WIDTH 5
+#define SPRITE_HEIGHT 5
+#define BORDER_MAP_SPRITE '#'
 #define FLAG_SPRITE_SIZE 5
 
 
