@@ -1,12 +1,12 @@
+#ifndef CODE_CACAHUETES_MAP_H
+#define CODE_CACAHUETES_MAP_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "shrek.h"
 #include "ane.h"
 #include "gingy.h"
 #include "children.h"
-
-#ifndef CODE_CACAHUETES_MAP_H
-#define CODE_CACAHUETES_MAP_H
 
 #define WIDTH_MAP 380
 #define HEIGHT_MAP 120
@@ -16,7 +16,6 @@
 #define SPRITE_HEIGHT 5
 #define BORDER_MAP_SPRITE '#'
 #define FLAG_SPRITE_SIZE 5
-
 
 typedef struct Map {
     int width;
@@ -31,7 +30,7 @@ extern const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE];
 
 void displayMap(Map *map);
 
-Map *createMap(int width, int height);
+Map *createMap(unsigned int width, unsigned int height);
 
 Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *startY, unsigned int *flagX, unsigned int *flagY);
 
@@ -46,4 +45,3 @@ void loadNextMap(Map **map, Shrek *shrek, const char *filename);
 void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY);
 
 #endif //CODE_CACAHUETES_MAP_H
-

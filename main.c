@@ -65,6 +65,7 @@ int main() {
                 break;
             }
         }
+
     } while (1);
 
     free(shrek);

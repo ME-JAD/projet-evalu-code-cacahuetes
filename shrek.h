@@ -7,6 +7,7 @@
 
 #define SPRITE_WIDTH 5
 #define SPRITE_HEIGHT 5
+#define SPRITE_COUNT 3
 
 #define SHREK_SPRITE_HORN '\''
 #define SHREK_SPRITE_HEAD 'O'
@@ -15,11 +16,11 @@
 #define SHREK_SPRITE_RIGHT '/'
 #define SHREK_SPRITE_LEFT '\\'
 
-
 typedef struct Shrek {
     unsigned int positionX;
     unsigned int positionY;
-    Sprite image;
+    int currentSpriteIndex;
+    Sprite images[SPRITE_COUNT];
 } Shrek;
 
 Shrek *createShrek();
