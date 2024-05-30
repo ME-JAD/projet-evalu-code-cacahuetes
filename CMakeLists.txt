@@ -11,6 +11,10 @@ add_executable(Code-Cacahuetes main.c
         map.c
         menu.c
         menu.h
+        ane.c
+        ane.h
+        gingy.c
+        gingy.h
         children.c
         children.h
         collision.c

@@ -1,5 +1,4 @@
 #include "children.h"
-//uwu
 Child *createChild() {
     Child *newChild = (Child *) malloc(sizeof(Child));
     if (newChild == NULL) {
@@ -7,7 +6,7 @@ Child *createChild() {
     }
 
     newChild->positionX = 0;
-    newChild->positionY = WIDTH_MAP * WIDTH_MAP;
+    newChild->positionY = 0;
     newChild->collision = false;
 
     for (int i = 0; i < SPRITE_HEIGHT; ++i) {
@@ -23,7 +22,7 @@ Child *createChild() {
     newChild->image.image[1][4] = CHILD_SPRITE_HEAD_L;
     newChild->image.image[2][1] = CHILD_SPRITE_LEFT_ARM;
     newChild->image.image[2][2] = CHILD_SPRITE_BODY;
-    newChild->image.image[2][2] = CHILD_SPRITE_RIGHT_ARM;
+    newChild->image.image[2][3] = CHILD_SPRITE_RIGHT_ARM;
     newChild->image.image[3][1] = CHILD_SPRITE_LEFT;
     newChild->image.image[3][3] = CHILD_SPRITE_RIGHT;
 

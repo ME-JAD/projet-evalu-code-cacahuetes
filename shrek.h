@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "sprite.h"
 
 #ifndef CODE_CACAHUETES_SHREK_H

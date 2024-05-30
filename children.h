@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "sprite.h"
-//uwu
 
 #ifndef CODE_CACAHUETES_CHILDREN_H
 #define CODE_CACAHUETES_CHILDREN_H
@@ -18,8 +17,8 @@
 
 
 typedef struct Child{
-    int positionX;
-    int positionY;
+    unsigned int positionX;
+    unsigned int positionY;
     bool collision;
     Sprite image;
 
