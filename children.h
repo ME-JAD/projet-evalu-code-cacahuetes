@@ -18,8 +18,8 @@
 
 
 typedef struct Child{
-    int positionX;
-    int positionY;
+    unsigned int positionX;
+    unsigned int positionY;
     bool collision;
     Sprite image;
 

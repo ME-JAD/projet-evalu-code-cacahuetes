@@ -12,6 +12,45 @@ const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE] = {
         {'|', ' ', ' ', ' ', ' '}
 };
 
+void putDonkeyOnMap(Map *map, Donkey *donkey, int x, int y) {
+    map->donkey = donkey;
+    map->donkey->positionX = x * CELL_SIZE;
+    map->donkey->positionY = y * CELL_SIZE;
+
+    // Placer le sprite de Donkey sur la carte
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[x][y][row * CELL_SIZE + col] = donkey->image.image[row][col];
+        }
+    }
+}
+
+void putGingyOnMap (Map *map, Gingy *gingy, int x, int y) {
+    map->gingy = gingy;
+    map->gingy->positionX = x * CELL_SIZE;
+    map->gingy->positionY = y * CELL_SIZE;
+
+    // Placer le sprite de Gingy sur la carte
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[x][y][row * CELL_SIZE + col] = gingy->image.image[row][col];
+        }
+    }
+}
+
+void putChildOnMap (Map *map, Child *child, int x, int y) {
+    map->children = child;
+    map->children->positionX = x * CELL_SIZE;
+    map->children->positionY = y * CELL_SIZE;
+
+    // Placer le sprite de Child sur la carte
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[x][y][row * CELL_SIZE + col] = child->image.image[row][col];
+        }
+    }
+}
+
 void displayMap(Map *map) {
 
     for (int row = 0; row < FLAG_SPRITE_SIZE; ++row) {
@@ -33,6 +72,7 @@ void displayMap(Map *map) {
     }
 }
 
+
 Map *createMap(int width, int height) {
     Map *newMap = (Map *) malloc(sizeof(Map));
     newMap->height = height;
@@ -50,6 +90,9 @@ Map *createMap(int width, int height) {
         }
     }
     newMap->shrek = createShrek();
+    newMap->donkey = createDonkey();
+    newMap->gingy = createGingy();
+    newMap->children = createChild();
     return newMap;
 }
 
@@ -92,17 +135,38 @@ Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *s
                 }
             }
 
-            /*if (line[col] == 'A') {
-                createDonkey(row, col);
+            if (line[col] == 'A') {
+                map->donkey->positionX = col;
+                map->donkey->positionY = row;
+                for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
+                    for (int cell_col = 0; cell_col < CELL_SIZE; ++cell_col) {
+                        map->cells[row][col][cell_row * CELL_SIZE + cell_col] = ' ';
+                    }
+                }
+                putDonkeyOnMap(map, map->donkey, row, col);
+            }
+
+            if (line[col] == 'B') {
+                map->gingy->positionX = col;
+                map->gingy->positionY = row;
+                for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
+                    for (int cell_col = 0; cell_col < CELL_SIZE; ++cell_col) {
+                        map->cells[row][col][cell_row * CELL_SIZE + cell_col] = ' ';
+                    }
+                }
+                putGingyOnMap(map, map->gingy, row, col);
             }
 
             if (line[col] == 'E') {
-                createChild();
+                map->children->positionX = col;
+                map->children->positionY = row;
+                for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
+                    for (int cell_col = 0; cell_col < CELL_SIZE; ++cell_col) {
+                        map->cells[row][col][cell_row * CELL_SIZE + cell_col] = ' ';
+                    }
+                }
+                putChildOnMap(map, map->children, row, col);
             }
-
-            if (line[col] == 'P') {
-                createGingy();
-            }*/
 
             if (line[col] == '^') {
                 *flagX = col;
@@ -121,6 +185,7 @@ void putShrekOnMap(Map *map, Shrek *shrek, int x, int y) {
     map->shrek->positionX = x * CELL_SIZE;
     map->shrek->positionY = y * CELL_SIZE;
 }
+
 
 void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
     for (int row = 0; row < SPRITE_HEIGHT; ++row) {

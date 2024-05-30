@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-//uwu
 
 #include "shrek.h"
 #include "ane.h"
@@ -30,11 +29,18 @@ typedef struct Map {
     int height;
     char ***cells;
     Shrek *shrek;
+    Donkey *donkey;
+    Gingy *gingy;
+    Child *children;
     unsigned int flagX;
     unsigned int flagY;
 } Map;
 
 extern const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE];
+
+void putDonkeyOnMap(Map *map, Donkey *donkey, int x, int y);
+void putGingyOnMap (Map *map, Gingy *gingy, int x, int y);
+void putChildOnMap (Map *map, Child *child, int x, int y);
 
 void displayMap(Map *map);
 
@@ -51,6 +57,7 @@ int isLevelComplete(Map *map);
 void loadNextMap(Map **map, Shrek *shrek, const char *filename);
 
 void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY);
+
 
 #endif //CODE_CACAHUETES_MAP_H
 
