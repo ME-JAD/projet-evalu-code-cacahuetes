@@ -4,20 +4,18 @@
 Shrek *createShrek() {
     Shrek *newShrek = (Shrek *) malloc(sizeof(Shrek));
     if (newShrek == NULL) {
-        return NULL; // Gestion de l'erreur d'allocation mémoire
+        return NULL;
     }
 
     newShrek->positionX = 0;
     newShrek->positionY = WIDTH_MAP * WIDTH_MAP;
 
-    // Initialisation du sprite de Shrek
     for (int i = 0; i < SPRITE_HEIGHT; ++i) {
         for (int j = 0; j < SPRITE_WIDTH; ++j) {
-            newShrek->image.image[i][j] = ' '; // Remplir avec des espaces par défaut
+            newShrek->image.image[i][j] = ' ';
         }
     }
 
-    // Dessin de Shrek
     newShrek->image.image[1][1] = SHREK_SPRITE_HORN;
     newShrek->image.image[1][2] = SHREK_SPRITE_HEAD;
     newShrek->image.image[1][3] = SHREK_SPRITE_HORN;
