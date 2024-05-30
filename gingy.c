@@ -1,5 +1,4 @@
 #include "gingy.h"
-//uwu
 
 Gingy *createGingy() {
     Gingy *newGingy = (Gingy *) malloc(sizeof(Gingy));
@@ -8,7 +7,7 @@ Gingy *createGingy() {
     }
 
     newGingy->positionX = 0;
-    newGingy->positionY = WIDTH_MAP * WIDTH_MAP;
+    newGingy->positionY = 0;
     newGingy->collision = false;
 
     for (int i = 0; i < SPRITE_HEIGHT; ++i) {

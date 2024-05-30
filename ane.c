@@ -1,20 +1,18 @@
 #include "ane.h"
-//uwu
 
-Donkey *createDonkey(unsigned int x, unsigned int y) {
+Donkey *createDonkey() {
     Donkey *newDonkey = (Donkey *) malloc(sizeof(Donkey));
     if (newDonkey == NULL) {
         return NULL; // Gestion de l'erreur d'allocation mémoire
     }
 
-    newDonkey->positionX = x;
-    newDonkey->positionY = y;
+    newDonkey->positionX = 0;
+    newDonkey->positionY = 0;
     newDonkey->collision = false;
 
-    // Initialisation du sprite de Shrek
     for (int i = 0; i < SPRITE_HEIGHT; ++i) {
         for (int j = 0; j < SPRITE_WIDTH; ++j) {
-            newDonkey->image.image[i][j] = ' '; // Remplir avec des espaces par défaut
+            newDonkey->image.image[i][j] = ' ';
         }
     }
 

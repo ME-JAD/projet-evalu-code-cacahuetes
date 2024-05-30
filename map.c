@@ -12,6 +12,42 @@ const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE] = {
         {'|', ' ', ' ', ' ', ' '}
 };
 
+void putDonkeyOnMap(Map *map, Donkey *donkey, int x, int y) {
+    map->donkey = donkey;
+    map->donkey->positionX = x * CELL_SIZE;
+    map->donkey->positionY = y * CELL_SIZE;
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[x][y][row * CELL_SIZE + col] = donkey->image.image[row][col];
+        }
+    }
+}
+
+void putGingyOnMap (Map *map, Gingy *gingy, int x, int y) {
+    map->gingy = gingy;
+    map->gingy->positionX = x * CELL_SIZE;
+    map->gingy->positionY = y * CELL_SIZE;
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[x][y][row * CELL_SIZE + col] = gingy->image.image[row][col];
+        }
+    }
+}
+
+void putChildOnMap (Map *map, Child *child, int x, int y) {
+    map->children = child;
+    map->children->positionX = x * CELL_SIZE;
+    map->children->positionY = y * CELL_SIZE;
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[x][y][row * CELL_SIZE + col] = child->image.image[row][col];
+        }
+    }
+}
+
 void displayMap(Map *map) {
     for (int row = 0; row < map->height; ++row) {
         for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
@@ -77,6 +113,9 @@ Map *createMap(unsigned int width, unsigned int height) {
         }
     }
     newMap->shrek = createShrek();
+    newMap->donkey = createDonkey();
+    newMap->gingy = createGingy();
+    newMap->children = createChild();
     return newMap;
 }
 
@@ -118,6 +157,39 @@ Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *s
                     }
                 }
                 putShrekOnMap(map, map->shrek, col, row);
+            }
+
+            if (line[col] == 'A') {
+                map->donkey->positionX = col;
+                map->donkey->positionY = row;
+                for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
+                    for (int cell_col = 0; cell_col < CELL_SIZE; ++cell_col) {
+                        map->cells[row][col][cell_row * CELL_SIZE + cell_col] = ' ';
+                    }
+                }
+                putDonkeyOnMap(map, map->donkey, row, col);
+            }
+
+            if (line[col] == 'B') {
+                map->gingy->positionX = col;
+                map->gingy->positionY = row;
+                for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
+                    for (int cell_col = 0; cell_col < CELL_SIZE; ++cell_col) {
+                        map->cells[row][col][cell_row * CELL_SIZE + cell_col] = ' ';
+                    }
+                }
+                putGingyOnMap(map, map->gingy, row, col);
+            }
+
+            if (line[col] == 'E') {
+                map->children->positionX = col;
+                map->children->positionY = row;
+                for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
+                    for (int cell_col = 0; cell_col < CELL_SIZE; ++cell_col) {
+                        map->cells[row][col][cell_row * CELL_SIZE + cell_col] = ' ';
+                    }
+                }
+                putChildOnMap(map, map->children, row, col);
             }
 
             if (line[col] == '^') {
