@@ -1,6 +1,8 @@
 #include "move.h"
 #include "collision.h"
 
+#include <unistd.h>
+
 void moveShrek(Map *map, char direction) {
     int deltaX = 0;
     int deltaY = 0;
@@ -8,26 +10,26 @@ void moveShrek(Map *map, char direction) {
     switch (direction) {
         case 'Z':
         case 'z':
-            deltaY = -1;
+            deltaY = -CELL_SIZE;
             break;
         case 'S':
         case 's':
-            deltaY = 1;
+            deltaY = CELL_SIZE;
             break;
         case 'Q':
         case 'q':
-            deltaX = -1;
+            deltaX = -CELL_SIZE;
             break;
         case 'D':
         case 'd':
-            deltaX = 1;
+            deltaX = CELL_SIZE;
             break;
         default:
             return;
     }
 
-    int newX = map->shrek->positionX + deltaX * CELL_SIZE;
-    int newY = map->shrek->positionY + deltaY * CELL_SIZE;
+    int newX = map->shrek->positionX + deltaX;
+    int newY = map->shrek->positionY + deltaY;
 
     if (checkCollision(map, newX, newY)) {
         return;
@@ -42,11 +44,19 @@ void moveShrek(Map *map, char direction) {
     map->shrek->positionX = newX;
     map->shrek->positionY = newY;
 
+    map->shrek->currentSpriteIndex = (map->shrek->currentSpriteIndex + 1) % SPRITE_COUNT;
+
     for (int row = 0; row < SPRITE_HEIGHT; row++) {
         for (int col = 0; col < SPRITE_WIDTH; col++) {
-            printf("\033[%d;%dH%c", map->shrek->positionY + row + 1, map->shrek->positionX + col + 1, map->shrek->image.image[row][col]);
+            printf("\033[%d;%dH%c", map->shrek->positionY + row + 1, map->shrek->positionX + col + 1,
+                   map->shrek->images[map->shrek->currentSpriteIndex].image[row][col]);
         }
     }
 
     fflush(stdout);
+}
+
+void updateSpriteAutomatically(Shrek *shrek) {
+    usleep(500000);
+    shrek->currentSpriteIndex = (shrek->currentSpriteIndex + 1) % SPRITE_COUNT;
 }

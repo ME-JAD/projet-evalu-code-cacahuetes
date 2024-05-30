@@ -26,7 +26,7 @@ void displayMap(Map *map) {
                         mapY >= shrekY && mapY < shrekY + SPRITE_HEIGHT) {
                         int spriteRow = mapY - shrekY;
                         int spriteCol = mapX - shrekX;
-                        printf("%c", map->shrek->image.image[spriteRow][spriteCol]);
+                        printf("%c", map->shrek->images[map->shrek->currentSpriteIndex].image[spriteRow][spriteCol]);
                     } else {
                         printf("%c", map->cells[row][col][cell_row * CELL_SIZE + cell_col]);
                     }
@@ -37,8 +37,30 @@ void displayMap(Map *map) {
     }
 }
 
+void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
+    printf("\033[?25l");
 
-Map *createMap(int width, int height) {
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            printf("\033[%d;%dH ", shrek->positionY + row + 1, shrek->positionX + col + 1);
+        }
+    }
+
+    moveShrek(map, direction);
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            printf("\033[%d;%dH%c", shrek->positionY + row + 1, shrek->positionX + col + 1, shrek->images[shrek->currentSpriteIndex].image[row][col]);
+        }
+    }
+
+    printf("\033[%d;%dH", map->height * CELL_SIZE + 1, 1);
+    printf("\033[?25h");
+
+    fflush(stdout);
+}
+
+Map *createMap(unsigned int width, unsigned int height) {
     Map *newMap = (Map *) malloc(sizeof(Map));
     newMap->height = height;
     newMap->width = width;
@@ -98,18 +120,6 @@ Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *s
                 putShrekOnMap(map, map->shrek, col, row);
             }
 
-            /*if (line[col] == 'A') {
-                createDonkey(row, col);
-            }
-
-            if (line[col] == 'E') {
-                createChild();
-            }
-
-            if (line[col] == 'P') {
-                createGingy();
-            }*/
-
             if (line[col] == '^') {
                 *flagX = col;
                 *flagY = row;
@@ -122,34 +132,10 @@ Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *s
     return map;
 }
 
-
 void putShrekOnMap(Map *map, Shrek *shrek, int x, int y) {
     map->shrek = shrek;
     map->shrek->positionX = x * CELL_SIZE;
     map->shrek->positionY = y * CELL_SIZE;
-}
-
-void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
-    printf("\033[?25l");
-
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            printf("\033[%d;%dH ", shrek->positionY + row + 1, shrek->positionX + col + 1);
-        }
-    }
-
-    moveShrek(map, direction);
-
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            printf("\033[%d;%dH%c", shrek->positionY + row + 1, shrek->positionX + col + 1, shrek->image.image[row][col]);
-        }
-    }
-
-    printf("\033[%d;%dH", map->height * CELL_SIZE + 1, 1);
-    printf("\033[?25h");
-
-    fflush(stdout);
 }
 
 int isLevelComplete(Map *map) {
@@ -167,7 +153,7 @@ int isLevelComplete(Map *map) {
 }
 
 void loadNextMap(Map **map, Shrek *shrek, const char *filename) {
-    int startX, startY, flagX, flagY;
+    unsigned int startX, startY, flagX, flagY;
     Map *newMap = loadMapFromFile(filename, &startX, &startY, &flagX, &flagY);
     if (!newMap) {
         printf("Failed to load map: %s\n", filename);
