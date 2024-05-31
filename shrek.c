@@ -5,6 +5,7 @@ Shrek *createShrek() {
     shrek->positionX = 0;
     shrek->positionY = 0;
     shrek->currentSpriteIndex = 0;
+    shrek->speed = 1;
 
     char sprite1[SPRITE_HEIGHT][SPRITE_WIDTH] = {
             {' ', ' ', ' ', ' ', ' '},

@@ -27,21 +27,29 @@ typedef struct Map {
     Child *children;
     unsigned int flagX;
     unsigned int flagY;
+    unsigned int gingyX;
+    unsigned int gingyY;
 } Map;
 
 extern const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE];
 
-void putDonkeyOnMap(Map *map, Donkey *donkey, int x, int y);
+void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int donkeyY);
 
-void putGingyOnMap (Map *map, Gingy *gingy, int x, int y);
+void putGingyOnMap (Map *map, Gingy *gingy, unsigned int gingyX, unsigned int gingyY);
 
-void putChildOnMap (Map *map, Child *child, int x, int y);
+void putChildOnMap (Map *map, Child *child, unsigned int childrenX, unsigned int childrenY);
 
 void displayMap(Map *map);
 
 Map *createMap(unsigned int width, unsigned int height);
 
-Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *startY, unsigned int *flagX, unsigned int *flagY);
+Map *loadMapFromFile(const char *filename,
+                     unsigned int *startX,
+                     unsigned int *startY,
+                     unsigned int *flagX,
+                     unsigned int *flagY,
+                     unsigned int *gingyX,
+                     unsigned int *gingyY);
 
 void putShrekOnMap(Map *map, Shrek *shrek, int x, int y);
 
@@ -52,5 +60,7 @@ int isLevelComplete(Map *map);
 void loadNextMap(Map **map, Shrek *shrek, const char *filename);
 
 void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY);
+
+int isShrekEatingGingy(Map *map);
 
 #endif //CODE_CACAHUETES_MAP_H

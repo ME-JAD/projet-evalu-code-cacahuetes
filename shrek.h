@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include "sprite.h"
 
 #ifndef CODE_CACAHUETES_SHREK_H
@@ -10,17 +11,12 @@
 #define SPRITE_HEIGHT 5
 #define SPRITE_COUNT 3
 
-#define SHREK_SPRITE_HORN '\''
-#define SHREK_SPRITE_HEAD 'O'
-#define SHREK_SPRITE_BODY '('
-#define SHREK_SPRITE_ARMS_CLOSE ')'
-#define SHREK_SPRITE_RIGHT '/'
-#define SHREK_SPRITE_LEFT '\\'
-
 typedef struct Shrek {
     unsigned int positionX;
     unsigned int positionY;
-    int currentSpriteIndex;
+    unsigned int currentSpriteIndex;
+    unsigned int speed;
+    time_t boostStartTime;
     Sprite images[SPRITE_COUNT];
 } Shrek;
 
