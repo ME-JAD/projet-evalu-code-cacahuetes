@@ -12,42 +12,6 @@ const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE] = {
         {'|', ' ', ' ', ' ', ' '}
 };
 
-void putDonkeyOnMap(Map *map, Donkey *donkey, int x, int y) {
-    map->donkey = donkey;
-    map->donkey->positionX = x * CELL_SIZE;
-    map->donkey->positionY = y * CELL_SIZE;
-
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            map->cells[x][y][row * CELL_SIZE + col] = donkey->image.image[row][col];
-        }
-    }
-}
-
-void putGingyOnMap (Map *map, Gingy *gingy, int x, int y) {
-    map->gingy = gingy;
-    map->gingy->positionX = x * CELL_SIZE;
-    map->gingy->positionY = y * CELL_SIZE;
-
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            map->cells[x][y][row * CELL_SIZE + col] = gingy->image.image[row][col];
-        }
-    }
-}
-
-void putChildOnMap (Map *map, Child *child, int x, int y) {
-    map->children = child;
-    map->children->positionX = x * CELL_SIZE;
-    map->children->positionY = y * CELL_SIZE;
-
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            map->cells[x][y][row * CELL_SIZE + col] = child->image.image[row][col];
-        }
-    }
-}
-
 void displayMap(Map *map) {
     for (int row = 0; row < map->height; ++row) {
         for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
@@ -119,7 +83,14 @@ Map *createMap(unsigned int width, unsigned int height) {
     return newMap;
 }
 
-Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *startY, unsigned int *flagX, unsigned int *flagY) {
+Map *loadMapFromFile(const char *filename,
+                     unsigned int *startX,
+                     unsigned int *startY,
+                     unsigned int *flagX,
+                     unsigned int *flagY,
+                     unsigned int *gingyX,
+                     unsigned int *gingyY) {
+
     FILE *file = fopen(filename, "r");
     if (!file) {
         perror("Failed to open map file");
@@ -170,17 +141,6 @@ Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *s
                 putDonkeyOnMap(map, map->donkey, row, col);
             }
 
-            if (line[col] == 'B') {
-                map->gingy->positionX = col;
-                map->gingy->positionY = row;
-                for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
-                    for (int cell_col = 0; cell_col < CELL_SIZE; ++cell_col) {
-                        map->cells[row][col][cell_row * CELL_SIZE + cell_col] = ' ';
-                    }
-                }
-                putGingyOnMap(map, map->gingy, row, col);
-            }
-
             if (line[col] == 'E') {
                 map->children->positionX = col;
                 map->children->positionY = row;
@@ -190,6 +150,14 @@ Map *loadMapFromFile(const char *filename, unsigned int *startX, unsigned int *s
                     }
                 }
                 putChildOnMap(map, map->children, row, col);
+            }
+
+            if (line[col] == 'B') {
+                map->gingy->positionX = col;
+                map->gingy->positionY = row;
+                *gingyX = col;
+                *gingyY = row;
+                putGingyOnMap(map, map->gingy, *gingyX, *gingyY);
             }
 
             if (line[col] == '^') {
@@ -224,9 +192,23 @@ int isLevelComplete(Map *map) {
     return 0;
 }
 
+int isShrekEatingGingy(Map *map) {
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            int shrekX = map->shrek->positionX + col;
+            int shrekY = map->shrek->positionY + row;
+
+            if (shrekX / CELL_SIZE == map->gingyX && shrekY / CELL_SIZE == map->gingyY) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
 void loadNextMap(Map **map, Shrek *shrek, const char *filename) {
-    unsigned int startX, startY, flagX, flagY;
-    Map *newMap = loadMapFromFile(filename, &startX, &startY, &flagX, &flagY);
+    unsigned int startX, startY, flagX, flagY, gingyX, gingyY;
+    Map *newMap = loadMapFromFile(filename, &startX, &startY, &flagX, &flagY, &gingyX, &gingyY);
     if (!newMap) {
         printf("Failed to load map: %s\n", filename);
         return;
@@ -237,6 +219,9 @@ void loadNextMap(Map **map, Shrek *shrek, const char *filename) {
 
     newMap->flagX = flagX;
     newMap->flagY = flagY;
+
+    newMap->gingyX = gingyX;
+    newMap->gingyY = gingyY;
 
     int centeredX = startX;
     int centeredY = startY;
@@ -250,6 +235,42 @@ void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY) {
     for (int row = 0; row < FLAG_SPRITE_SIZE; ++row) {
         for (int col = 0; col < FLAG_SPRITE_SIZE; ++col) {
             map->cells[flagY][flagX][row * CELL_SIZE + col] = FLAG_SPRITE[row][col];
+        }
+    }
+}
+
+void putGingyOnMap (Map *map, Gingy *gingy, unsigned int gingyX, unsigned int gingyY) {
+    map->gingy = gingy;
+    map->gingy->positionX = gingyX * CELL_SIZE;
+    map->gingy->positionY = gingyY * CELL_SIZE;
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[gingyY][gingyX][row * CELL_SIZE + col] = gingy->image.image[row][col];
+        }
+    }
+}
+
+void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int donkeyY) {
+    map->donkey = donkey;
+    map->donkey->positionX = donkeyX * CELL_SIZE;
+    map->donkey->positionY = donkeyY * CELL_SIZE;
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[donkeyX][donkeyY][row * CELL_SIZE + col] = donkey->image.image[row][col];
+        }
+    }
+}
+
+void putChildOnMap (Map *map, Child *child, unsigned int childX, unsigned int childY) {
+    map->children = child;
+    map->children->positionX = childX * CELL_SIZE;
+    map->children->positionY = childY * CELL_SIZE;
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[childX][childY][row * CELL_SIZE + col] = child->image.image[row][col];
         }
     }
 }

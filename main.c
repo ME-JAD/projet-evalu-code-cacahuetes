@@ -29,10 +29,10 @@ int main() {
             "../map2.txt",
             "../map3.txt"
     };
-    int currentMapIndex = 0;
+    unsigned int currentMapIndex = 0;
 
-    unsigned int startX, startY, flagX, flagY;
-    Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY);
+    unsigned int startX, startY, flagX, flagY, gingyX, gingyY;
+    Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY, &gingyX, &gingyY);
     if (!map) {
         return 1;
     }
@@ -43,6 +43,8 @@ int main() {
     putShrekOnMap(map, shrek, centeredX, centeredY);
     map->flagX = flagX;
     map->flagY = flagY;
+    map->gingyX = gingyX;
+    map->gingyY = gingyY;
 
     clearScreen();
     displayMap(map);
@@ -64,6 +66,14 @@ int main() {
                 displayVictoryMenu();
                 break;
             }
+        }
+
+        if (isShrekEatingGingy(map)) {
+            activateSpeedBoost(map->shrek);
+        }
+
+        if (shrek->speed > 1 && difftime(time(NULL), shrek->boostStartTime) >= 5) {
+            shrek->speed = 1;
         }
 
     } while (1);

@@ -1,8 +1,6 @@
 #include "move.h"
 #include "collision.h"
 
-#include <unistd.h>
-
 void moveShrek(Map *map, char direction) {
     int deltaX = 0;
     int deltaY = 0;
@@ -10,19 +8,19 @@ void moveShrek(Map *map, char direction) {
     switch (direction) {
         case 'Z':
         case 'z':
-            deltaY = -CELL_SIZE;
+            deltaY = -CELL_SIZE * map->shrek->speed;
             break;
         case 'S':
         case 's':
-            deltaY = CELL_SIZE;
+            deltaY = CELL_SIZE * map->shrek->speed;
             break;
         case 'Q':
         case 'q':
-            deltaX = -CELL_SIZE;
+            deltaX = -CELL_SIZE * map->shrek->speed;
             break;
         case 'D':
         case 'd':
-            deltaX = CELL_SIZE;
+            deltaX = CELL_SIZE * map->shrek->speed;
             break;
         default:
             return;
@@ -56,7 +54,7 @@ void moveShrek(Map *map, char direction) {
     fflush(stdout);
 }
 
-void updateSpriteAutomatically(Shrek *shrek) {
-    usleep(500000);
-    shrek->currentSpriteIndex = (shrek->currentSpriteIndex + 1) % SPRITE_COUNT;
+void activateSpeedBoost(Shrek *shrek) {
+    shrek->speed = 3;
+    shrek->boostStartTime = time(NULL);
 }

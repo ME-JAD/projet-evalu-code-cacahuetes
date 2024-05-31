@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "shrek.h"
 #include "map.h"
@@ -9,6 +10,6 @@
 
 void moveShrek(Map *map, char direction);
 
-void updateSpriteAutomatically(Shrek *shrek);
+void activateSpeedBoost(Shrek *shrek);
 
 #endif //CODE_CACAHUETES_MOVE_H
