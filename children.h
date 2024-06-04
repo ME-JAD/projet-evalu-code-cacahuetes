@@ -14,15 +14,19 @@
 #define CHILD_SPRITE_BODY '|'
 #define CHILD_SPRITE_LEFT '/'
 #define CHILD_SPRITE_RIGHT '\\'
-
+#define NUMBER_OF_SCARED_CHILDREN 3
+#define NUMBER_OF_MAPS 3
 
 typedef struct Child{
     unsigned int positionX;
     unsigned int positionY;
-    bool collision;
     Sprite image;
 
 }Child;
+
+extern unsigned int positionXOfChildren[NUMBER_OF_MAPS][NUMBER_OF_SCARED_CHILDREN];
+
+extern unsigned int positionYOfChildren[NUMBER_OF_MAPS][NUMBER_OF_SCARED_CHILDREN];
 
 Child *createChild();
 

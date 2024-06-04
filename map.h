@@ -65,6 +65,8 @@ void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY);
 
 int isShrekEatingGingy(Map *map);
 
+int isShrekScaringAChild(Map *map,  unsigned int currentMapIndex);
+
 void updateMapWithDonkey(Map *map);
 
 bool isShrekCollisionDonkey(Map *map, Shrek *shrek);
