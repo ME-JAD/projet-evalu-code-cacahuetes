@@ -35,7 +35,10 @@ void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int
     }
 }
 
-void putChildOnMap (Map *map, Child *child, unsigned int childX, unsigned int childY) {
+void putChildOnMap(Map *map, Child *child, unsigned int childX, unsigned int childY, unsigned int currentMapIndex, unsigned int childIndex) {
+    if (childStatus[currentMapIndex][childIndex].scared) {
+        return;
+    }
     map->children = child;
     map->children->positionX = childX * CELL_SIZE;
     map->children->positionY = childY * CELL_SIZE;
@@ -46,6 +49,7 @@ void putChildOnMap (Map *map, Child *child, unsigned int childX, unsigned int ch
         }
     }
 }
+
 
 void displayMap(Map *map) {
     for (int row = 0; row < map->height; ++row) {
@@ -128,7 +132,9 @@ Map *loadMapFromFile(const char *filename,
                      unsigned int *flagX,
                      unsigned int *flagY,
                      unsigned int *gingyX,
-                     unsigned int *gingyY) {
+                     unsigned int *gingyY,
+                     unsigned int currentMapIndex,
+                     unsigned int childIndex) {
 
     FILE *file = fopen(filename, "r");
     if (!file) {
@@ -190,7 +196,7 @@ Map *loadMapFromFile(const char *filename,
                         map->cells[row][col][cell_row * CELL_SIZE + cell_col] = ' ';
                     }
                 }
-                putChildOnMap(map, map->children, row, col);
+                putChildOnMap(map, map->children, row, col,currentMapIndex,childIndex);
             }
 
             if (line[col] == 'B') {
@@ -247,27 +253,9 @@ int isShrekEatingGingy(Map *map) {
     return 0;
 }
 
-int isShrekScaringAChild(Map *map,  unsigned int currentMapIndex) {
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            int shrekX = map->shrek->positionX + col;
-            int shrekY = map->shrek->positionY + row;
-
-            for (int childIndex = 0; childIndex < NUMBER_MAX_OF_SCARED_CHILDREN; ++childIndex) {
-                if (shrekX == positionXOfChildren[currentMapIndex][childIndex] &&
-                    shrekY == positionYOfChildren[currentMapIndex][childIndex]) {
-                    return 1;
-                }
-            }
-        }
-    }
-    return 0;
-}
-
-
 void loadNextMap(Map **map, Shrek *shrek, const char *filename) {
-    unsigned int startX, startY, flagX, flagY, gingyX, gingyY;
-    Map *newMap = loadMapFromFile(filename, &startX, &startY, &flagX, &flagY, &gingyX, &gingyY);
+    unsigned int startX, startY, flagX, flagY, gingyX, gingyY,currentMapIndex,childIndex;
+    Map *newMap = loadMapFromFile(filename, &startX, &startY, &flagX, &flagY, &gingyX, &gingyY,currentMapIndex,childIndex);
     if (!newMap) {
         printf("Failed to load map: %s\n", filename);
         return;
@@ -336,12 +324,33 @@ bool isShrekCollisionDonkey(Map *map, Shrek *shrek) {
     return false;
 }
 
+
+int isShrekScaringAChild(Map *map, unsigned int currentMapIndex) {
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            int shrekX = map->shrek->positionX + col;
+            int shrekY = map->shrek->positionY + row;
+
+            for (int childIndex = 0; childIndex < NUMBER_MAX_OF_SCARED_CHILDREN; ++childIndex) {
+                if (shrekX == positionXOfChildren[currentMapIndex][childIndex] &&
+                    shrekY == positionYOfChildren[currentMapIndex][childIndex] &&
+                    !childStatus[currentMapIndex][childIndex].scared) {
+
+                    childStatus[currentMapIndex][childIndex].scared = true;
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
 void displayScaredChildrenBelowTheMap(unsigned int scaredChildrenCount) {
     unsigned int offsetX = 0;
     unsigned int offsetY = HEIGHT_MAP + 2;
 
     for (int i = 0; i < scaredChildrenCount; ++i) {
-        for (int row = 0; row < 3; ++row) {
+        for (int row = 0; row < NUMBER_MAX_OF_SCARED_CHILDREN; ++row) {
             printf("\033[%d;%dH", offsetY + row, offsetX + i + CHILD_GAP);
             printf("     ");
         }

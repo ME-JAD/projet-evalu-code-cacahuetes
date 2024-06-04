@@ -37,7 +37,7 @@ int main() {
     unsigned int iterationCount = 0;
     unsigned int scaredChildrenCount = 0;
 
-    Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY, &gingyX, &gingyY);
+    Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY, &gingyX, &gingyY,currentMapIndex,scaredChildrenCount);
     if (!map) {
         return 1;
     }

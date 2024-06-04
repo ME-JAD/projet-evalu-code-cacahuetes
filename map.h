@@ -40,7 +40,7 @@ void putGingyOnMap (Map *map, Gingy *gingy, unsigned int gingyX, unsigned int gi
 
 void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int donkeyY);
 
-void putChildOnMap (Map *map, Child *child, unsigned int childrenX, unsigned int childrenY);
+void putChildOnMap (Map *map, Child *child, unsigned int childX, unsigned int childY, unsigned int currentMapIndex, unsigned int childIndex);
 
 void displayMap(Map *map);
 
@@ -52,7 +52,9 @@ Map *loadMapFromFile(const char *filename,
                      unsigned int *flagX,
                      unsigned int *flagY,
                      unsigned int *gingyX,
-                     unsigned int *gingyY);
+                     unsigned int *gingyY,
+                     unsigned int currentMapIndex,
+                     unsigned int childIndex);
 
 void putShrekOnMap(Map *map, Shrek *shrek, int x, int y);
 
