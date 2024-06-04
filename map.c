@@ -12,6 +12,41 @@ const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE] = {
         {'|', ' ', ' ', ' ', ' '}
 };
 
+void putGingyOnMap (Map *map, Gingy *gingy, unsigned int gingyX, unsigned int gingyY) {
+    map->gingy = gingy;
+    map->gingy->positionX = gingyX * CELL_SIZE;
+    map->gingy->positionY = gingyY * CELL_SIZE;
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[gingyY][gingyX][row * CELL_SIZE + col] = gingy->image.image[row][col];
+        }
+    }
+}
+
+void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int donkeyY) {
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            // Assurez-vous de ne pas écraser des parties essentielles de la carte
+            if (map->cells[donkeyX][donkeyY][row * CELL_SIZE + col] == ' ') {
+                map->cells[donkeyX][donkeyY][row * CELL_SIZE + col] = donkey->image.image[row][col];
+            }
+        }
+    }
+}
+
+void putChildOnMap (Map *map, Child *child, unsigned int childX, unsigned int childY) {
+    map->children = child;
+    map->children->positionX = childX * CELL_SIZE;
+    map->children->positionY = childY * CELL_SIZE;
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[childX][childY][row * CELL_SIZE + col] = child->image.image[row][col];
+        }
+    }
+}
+
 void displayMap(Map *map) {
     for (int row = 0; row < map->height; ++row) {
         for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
@@ -77,7 +112,11 @@ Map *createMap(unsigned int width, unsigned int height) {
         }
     }
     newMap->shrek = createShrek();
-    newMap->donkey = createDonkey();
+    newMap->shrek = createShrek();
+    for (int i = 0; i < MAX_DONKEYS; ++i) {
+        newMap->donkeys[i] = NULL;
+    }
+    newMap->donkeyCount = 0;
     newMap->gingy = createGingy();
     newMap->children = createChild();
     return newMap;
@@ -131,14 +170,16 @@ Map *loadMapFromFile(const char *filename,
             }
 
             if (line[col] == 'A') {
-                map->donkey->positionX = col;
-                map->donkey->positionY = row;
+                Donkey *donkey = createDonkey();
+                donkey->positionX = col * CELL_SIZE;
+                donkey->positionY = row * CELL_SIZE;
+                map->donkeys[map->donkeyCount++] = donkey;
                 for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
                     for (int cell_col = 0; cell_col < CELL_SIZE; ++cell_col) {
                         map->cells[row][col][cell_row * CELL_SIZE + cell_col] = ' ';
                     }
                 }
-                putDonkeyOnMap(map, map->donkey, row, col);
+                putDonkeyOnMap(map, donkey, row, col);
             }
 
             if (line[col] == 'E') {
@@ -239,38 +280,28 @@ void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY) {
     }
 }
 
-void putGingyOnMap (Map *map, Gingy *gingy, unsigned int gingyX, unsigned int gingyY) {
-    map->gingy = gingy;
-    map->gingy->positionX = gingyX * CELL_SIZE;
-    map->gingy->positionY = gingyY * CELL_SIZE;
+void updateMapWithDonkey(Map *map) {
+    printf("\033[?25l");
 
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            map->cells[gingyY][gingyX][row * CELL_SIZE + col] = gingy->image.image[row][col];
+    moveDonkeyRandomly(map); // Déplacez les ânes aléatoirement
+
+    for (int i = 0; i < map->donkeyCount; ++i) {
+        if (map->donkeys[i] != NULL) {
+            // Effacez l'âne de son ancienne position
+            for (int row = 0; row < SPRITE_HEIGHT; row++) {
+                for (int col = 0; col < SPRITE_WIDTH; col++) {
+                    printf("\033[%d;%dH ", map->donkeys[i]->positionY + row + 1, map->donkeys[i]->positionX + col + 1);
+                }
+            }
+
+            // Affichez l'âne dans sa nouvelle position
+            for (int row = 0; row < SPRITE_HEIGHT; row++) {
+                for (int col = 0; col < SPRITE_WIDTH; col++) {
+                    printf("\033[%d;%dH%c", map->donkeys[i]->positionY + row + 1, map->donkeys[i]->positionX + col + 1,
+                           map->donkeys[i]->image.image[row][col]);
+                }
+            }
         }
     }
 }
 
-void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int donkeyY) {
-    map->donkey = donkey;
-    map->donkey->positionX = donkeyX * CELL_SIZE;
-    map->donkey->positionY = donkeyY * CELL_SIZE;
-
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            map->cells[donkeyX][donkeyY][row * CELL_SIZE + col] = donkey->image.image[row][col];
-        }
-    }
-}
-
-void putChildOnMap (Map *map, Child *child, unsigned int childX, unsigned int childY) {
-    map->children = child;
-    map->children->positionX = childX * CELL_SIZE;
-    map->children->positionY = childY * CELL_SIZE;
-
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            map->cells[childX][childY][row * CELL_SIZE + col] = child->image.image[row][col];
-        }
-    }
-}

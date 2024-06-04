@@ -58,3 +58,54 @@ void activateSpeedBoost(Shrek *shrek) {
     shrek->speed = 3;
     shrek->boostStartTime = time(NULL);
 }
+
+void moveDonkeyRandomly(Map *map) {
+    for (int i = 0; i < map->donkeyCount; ++i) {
+        if (map->donkeys[i] != NULL) {
+            int oldX = 0;
+            int oldY = 0;
+
+            int direction = rand() % 4;
+            switch (direction) {
+                case 0: // Move up
+                    oldY = -CELL_SIZE;
+                    break;
+                case 1: // Move down
+                    oldY = CELL_SIZE;
+                    break;
+                case 2: // Move left
+                    oldX = -CELL_SIZE;
+                    break;
+                case 3: // Move right
+                    oldX = CELL_SIZE;
+                    break;
+            }
+
+            int newX = map->donkeys[i]->positionX + oldX;
+            int newY = map->donkeys[i]->positionY + oldY;
+
+            if (checkCollision(map, newX, newY)) {
+                return;
+            }
+
+            for (int row = 0; row < SPRITE_HEIGHT; row++) {
+                for (int col = 0; col < SPRITE_WIDTH; col++) {
+                    printf("\033[%d;%dH ", map->donkeys[i]->positionY + row + 1, map->donkeys[i]->positionX + col + 1);
+                }
+            }
+
+            map->donkeys[i]->positionX = newX;
+            map->donkeys[i]->positionY = newY;
+
+
+            for (int row = 0; row < SPRITE_HEIGHT; row++) {
+                for (int col = 0; col < SPRITE_WIDTH; col++) {
+                    printf("\033[%d;%dH%c", map->donkeys[i]->positionY + row + 1, map->donkeys[i]->positionX + col + 1,
+                           map->donkeys[i]->image.image[row][col]);
+                }
+            }
+
+            fflush(stdout);
+        }
+    }
+}
