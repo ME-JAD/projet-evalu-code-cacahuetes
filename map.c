@@ -305,3 +305,18 @@ void updateMapWithDonkey(Map *map) {
     }
 }
 
+bool isShrekCollisionDonkey(Map *map, Shrek *shrek) {
+    for (int i = 0; i < map->donkeyCount; ++i) {
+        Donkey *donkey = map->donkeys[i];
+        if (donkey != NULL) {
+            // Vérifier la collision de Shrek avec l'âne
+            if (shrek->positionX < donkey->positionX + SPRITE_WIDTH &&
+                shrek->positionX + SPRITE_WIDTH > donkey->positionX &&
+                shrek->positionY < donkey->positionY + SPRITE_HEIGHT &&
+                shrek->positionY + SPRITE_HEIGHT > donkey->positionY) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
