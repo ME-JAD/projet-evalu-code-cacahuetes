@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <conio.h>
+#include <unistd.h>
 
 #include "shrek.h"
 #include "ane.h"
@@ -50,6 +51,7 @@ int main() {
     displayMap(map);
 
     char input;
+    unsigned int iterationCount = 0;
 
     do {
         input = _getch();
@@ -67,6 +69,12 @@ int main() {
                 break;
             }
         }
+
+        if (iterationCount % 2 == 0) {
+            updateMapWithDonkey(map);
+        }
+        iterationCount++;
+        usleep(50);
 
         if (isShrekEatingGingy(map)) {
             activateSpeedBoost(map->shrek);

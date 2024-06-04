@@ -16,13 +16,15 @@
 #define SPRITE_HEIGHT 5
 #define BORDER_MAP_SPRITE '#'
 #define FLAG_SPRITE_SIZE 5
+#define MAX_DONKEYS 10
 
 typedef struct Map {
     int width;
     int height;
     char ***cells;
     Shrek *shrek;
-    Donkey *donkey;
+    Donkey *donkeys [MAX_DONKEYS];
+    int donkeyCount;
     Gingy *gingy;
     Child *children;
     unsigned int flagX;
@@ -33,9 +35,9 @@ typedef struct Map {
 
 extern const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE];
 
-void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int donkeyY);
-
 void putGingyOnMap (Map *map, Gingy *gingy, unsigned int gingyX, unsigned int gingyY);
+
+void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int donkeyY);
 
 void putChildOnMap (Map *map, Child *child, unsigned int childrenX, unsigned int childrenY);
 
@@ -62,5 +64,7 @@ void loadNextMap(Map **map, Shrek *shrek, const char *filename);
 void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY);
 
 int isShrekEatingGingy(Map *map);
+
+void updateMapWithDonkey(Map *map);
 
 #endif //CODE_CACAHUETES_MAP_H
