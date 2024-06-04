@@ -7,9 +7,7 @@
 #ifndef CODE_CACAHUETES_SHREK_H
 #define CODE_CACAHUETES_SHREK_H
 
-#define SPRITE_WIDTH 5
-#define SPRITE_HEIGHT 5
-#define SPRITE_COUNT 3
+#define SHREK_SPRITE_COUNT 3
 
 typedef struct Shrek {
     unsigned int positionX;
@@ -17,7 +15,7 @@ typedef struct Shrek {
     unsigned int currentSpriteIndex;
     unsigned int speed;
     time_t boostStartTime;
-    Sprite images[SPRITE_COUNT];
+    Sprite images[SHREK_SPRITE_COUNT];
 } Shrek;
 
 Shrek *createShrek();

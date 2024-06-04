@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include "sprite.h"
 
-
 #ifndef CODE_CACAHUETES_GINGY_H
 #define CODE_CACAHUETES_GINGY_H
 
@@ -17,9 +16,7 @@
 typedef struct Gingy{
     unsigned int positionX;
     unsigned int positionY;
-    bool collision;
     Sprite image;
-
 }Gingy;
 
 Gingy *createGingy();

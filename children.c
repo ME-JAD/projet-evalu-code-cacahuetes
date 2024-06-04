@@ -29,19 +29,54 @@ Child *createChild() {
     return newChild;
 }
 
-unsigned int positionXOfChildren[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN] = {
-        {245, 225, 350}, // enf1 (X1)   ;  enft2(X1)   ;  enft3(X1)
-        {25, 340, 355},  // enf1 (X2)   ;  enft2(X2)   ;  enft3(X2)
-        {125, 165, 150}  // enf1 (X3)   ;  enft2(X3)   ;  enft3(X3)
+unsigned int positionsXOfChildrenOnTheMap[NUMBER_TOTAL_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN] = {
+        {245, 225, 350},
+        {25, 340, 355},
+        {125, 165, 150}
 };
-unsigned int positionYOfChildren[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN] = {
-        {100, 10, 10}, // enf1 (Y1)   ;  enft2(Y1)   ;  enft3(Y1)
-        {10, 105, 45}, // enf1 (Y2)   ;  enft2(Y2)   ;  enft3(Y2)
-        {70, 105, 25}  // enf1 (Y3)   ;  enft2(Y3)   ;  enft3(Y3)
+unsigned int positionsYOfChildrenOnTheMap[NUMBER_TOTAL_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN] = {
+        {100, 10, 10},
+        {10, 105, 45},
+        {70, 105, 25}
 };
 
-ChildStatus childStatus[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN] = {
+ChildStatus childStatus[NUMBER_TOTAL_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN] = {
         {{false}, {false}, {false}},
         {{false}, {false}, {false}},
         {{false}, {false}, {false}}
 };
+
+void displayScaredChildrenBelowTheMap(unsigned int scaredChildrenCount) {
+    unsigned int offsetX = 0;
+    unsigned int offsetY = HEIGHT_MAP + 2;
+
+    for (int i = 0; i < scaredChildrenCount; ++i) {
+        for (int row = 0; row < NUMBER_MAX_OF_SCARED_CHILDREN; ++row) {
+            printf("\033[%d;%dH", offsetY + row, offsetX + i + GAP_OF_CHILDREN_BELOW_THE_MAP);
+            printf("     ");
+        }
+    }
+
+    for (int i = 0 ; i < scaredChildrenCount; ++i) {
+        int childOffsetX = offsetX + i * GAP_OF_CHILDREN_BELOW_THE_MAP;
+        printf("\033[%d;%dH", offsetY, childOffsetX);
+        printf("(T_T)");
+        printf("\033[%d;%dH", offsetY + 1, childOffsetX);
+        printf(" /|\\ ");
+        printf("\033[%d;%dH", offsetY + 2, childOffsetX);
+        printf(" / \\ ");
+    }
+}
+
+void clearScaredChildrenBelowTheMap() {
+    int mapHeight = HEIGHT_MAP;
+    int offsetX = 0;
+    int offsetY = mapHeight + 2;
+
+    for (int i = 0; i < NUMBER_MAX_OF_SCARED_CHILDREN; ++i) {
+        for (int row = 0; row < NUMBER_MAX_OF_SCARED_CHILDREN; ++row) {
+            printf("\033[%d;%dH", offsetY + row, offsetX + i * GAP_OF_CHILDREN_BELOW_THE_MAP);
+            printf("     ");
+        }
+    }
+}

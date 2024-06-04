@@ -7,14 +7,13 @@
 
 #ifndef CODE_CACAHUETES_MOVE_H
 #define CODE_CACAHUETES_MOVE_H
+#define SPEED_BOOST 3
+#define NUMBER_OF_POSSIBLE_DIRECTIONS 4
 
 void moveShrek(Map *map, char direction);
 
 void activateSpeedBoost(Shrek *shrek);
 
 void moveDonkeyRandomly(Map *map);
-
-
-
 
 #endif //CODE_CACAHUETES_MOVE_H

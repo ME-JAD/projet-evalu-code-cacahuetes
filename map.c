@@ -1,53 +1,31 @@
 #include "map.h"
 #include "move.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE] = {
-        {'|', '-', '-', '-', '-'},
-        {'|', ' ', ' ', ' ', '|'},
-        {'|', '-', '-', '-', '-'},
-        {'|', ' ', ' ', ' ', ' '},
-        {'|', ' ', ' ', ' ', ' '}
-};
-
-void putGingyOnMap (Map *map, Gingy *gingy, unsigned int gingyX, unsigned int gingyY) {
-    map->gingy = gingy;
-    map->gingy->positionX = gingyX * CELL_SIZE;
-    map->gingy->positionY = gingyY * CELL_SIZE;
-
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            map->cells[gingyY][gingyX][row * CELL_SIZE + col] = gingy->image.image[row][col];
-        }
-    }
-}
-
-void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int donkeyY) {
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            // Assurez-vous de ne pas écraser des parties essentielles de la carte
-            if (map->cells[donkeyX][donkeyY][row * CELL_SIZE + col] == ' ') {
-                map->cells[donkeyX][donkeyY][row * CELL_SIZE + col] = donkey->image.image[row][col];
+Map *createMap(unsigned int width, unsigned int height) {
+    Map *newMap = (Map *) malloc(sizeof(Map));
+    newMap->height = height;
+    newMap->width = width;
+    newMap->cells = (char ***) malloc(height * sizeof(char **));
+    for (int row = 0; row < height; ++row) {
+        newMap->cells[row] = (char **) malloc(width * sizeof(char *));
+        for (int col = 0; col < width; ++col) {
+            newMap->cells[row][col] = (char *) malloc(CELL_SIZE * CELL_SIZE * sizeof(char));
+            for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
+                for (int cell_col = 0; cell_col < CELL_SIZE; ++cell_col) {
+                    newMap->cells[row][col][cell_row * CELL_SIZE + cell_col] = ' ';
+                }
             }
         }
     }
-}
-
-void putChildOnMap(Map *map, Child *child, unsigned int childX, unsigned int childY, unsigned int currentMapIndex, unsigned int childIndex) {
-    if (childStatus[currentMapIndex][childIndex].scared) {
-        return;
+    newMap->shrek = createShrek();
+    newMap->shrek = createShrek();
+    for (int i = 0; i < NUMBER_MAX_OF_DONKEYS; ++i) {
+        newMap->donkeys[i] = NULL;
     }
-    map->children = child;
-    map->children->positionX = childX * CELL_SIZE;
-    map->children->positionY = childY * CELL_SIZE;
-
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            map->cells[childX][childY][row * CELL_SIZE + col] = child->image.image[row][col];
-        }
-    }
+    newMap->donkeyCount = 0;
+    newMap->gingy = createGingy();
+    newMap->children = createChild();
+    return newMap;
 }
 
 
@@ -74,56 +52,6 @@ void displayMap(Map *map) {
             printf("\n");
         }
     }
-}
-
-void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
-    printf("\033[?25l");
-
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            printf("\033[%d;%dH ", shrek->positionY + row + 1, shrek->positionX + col + 1);
-        }
-    }
-
-    moveShrek(map, direction);
-
-    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
-        for (int col = 0; col < SPRITE_WIDTH; ++col) {
-            printf("\033[%d;%dH%c", shrek->positionY + row + 1, shrek->positionX + col + 1, shrek->images[shrek->currentSpriteIndex].image[row][col]);
-        }
-    }
-
-    printf("\033[%d;%dH", map->height * CELL_SIZE + 1, 1);
-    printf("\033[?25h");
-
-    fflush(stdout);
-}
-
-Map *createMap(unsigned int width, unsigned int height) {
-    Map *newMap = (Map *) malloc(sizeof(Map));
-    newMap->height = height;
-    newMap->width = width;
-    newMap->cells = (char ***) malloc(height * sizeof(char **));
-    for (int row = 0; row < height; ++row) {
-        newMap->cells[row] = (char **) malloc(width * sizeof(char *));
-        for (int col = 0; col < width; ++col) {
-            newMap->cells[row][col] = (char *) malloc(CELL_SIZE * CELL_SIZE * sizeof(char));
-            for (int cell_row = 0; cell_row < CELL_SIZE; ++cell_row) {
-                for (int cell_col = 0; cell_col < CELL_SIZE; ++cell_col) {
-                    newMap->cells[row][col][cell_row * CELL_SIZE + cell_col] = ' ';
-                }
-            }
-        }
-    }
-    newMap->shrek = createShrek();
-    newMap->shrek = createShrek();
-    for (int i = 0; i < MAX_DONKEYS; ++i) {
-        newMap->donkeys[i] = NULL;
-    }
-    newMap->donkeyCount = 0;
-    newMap->gingy = createGingy();
-    newMap->children = createChild();
-    return newMap;
 }
 
 Map *loadMapFromFile(const char *filename,
@@ -219,10 +147,128 @@ Map *loadMapFromFile(const char *filename,
     return map;
 }
 
+void loadNextMap(Map **map, Shrek *shrek, const char *filename) {
+    unsigned int startX, startY, flagX, flagY, gingyX, gingyY,currentMapIndex,childIndex;
+    Map *newMap = loadMapFromFile(filename, &startX, &startY, &flagX, &flagY, &gingyX, &gingyY,currentMapIndex,childIndex);
+    if (!newMap) {
+        printf("Failed to load map: %s\n", filename);
+        return;
+    }
+
+    free(*map);
+    *map = newMap;
+
+    newMap->flagX = flagX;
+    newMap->flagY = flagY;
+
+    newMap->gingyX = gingyX;
+    newMap->gingyY = gingyY;
+
+    int centeredX = startX;
+    int centeredY = startY;
+    putShrekOnMap(newMap, shrek, centeredX, centeredY);
+
+    printf("\033[H\033[J");
+    displayMap(newMap);
+}
+
+
 void putShrekOnMap(Map *map, Shrek *shrek,int x, int y) {
     map->shrek = shrek;
     map->shrek->positionX = x * CELL_SIZE;
     map->shrek->positionY = y * CELL_SIZE;
+}
+
+void putGingyOnMap (Map *map, Gingy *gingy, unsigned int gingyX, unsigned int gingyY) {
+    map->gingy = gingy;
+    map->gingy->positionX = gingyX * CELL_SIZE;
+    map->gingy->positionY = gingyY * CELL_SIZE;
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[gingyY][gingyX][row * CELL_SIZE + col] = gingy->image.image[row][col];
+        }
+    }
+}
+
+void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int donkeyY) {
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            if (map->cells[donkeyX][donkeyY][row * CELL_SIZE + col] == ' ') {
+                map->cells[donkeyX][donkeyY][row * CELL_SIZE + col] = donkey->image.image[row][col];
+            }
+        }
+    }
+}
+
+void putChildOnMap(Map *map, Child *child, unsigned int childX, unsigned int childY, unsigned int currentMapIndex, unsigned int childIndex) {
+    if (childStatus[currentMapIndex][childIndex].scared) {
+        return;
+    }
+    map->children = child;
+    map->children->positionX = childX * CELL_SIZE;
+    map->children->positionY = childY * CELL_SIZE;
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            map->cells[childX][childY][row * CELL_SIZE + col] = child->image.image[row][col];
+        }
+    }
+}
+
+void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY) {
+    for (int row = 0; row < FLAG_SPRITE_SIZE; ++row) {
+        for (int col = 0; col < FLAG_SPRITE_SIZE; ++col) {
+            map->cells[flagY][flagX][row * CELL_SIZE + col] = FLAG_SPRITE[row][col];
+        }
+    }
+}
+
+
+void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
+    printf("\033[?25l");
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            printf("\033[%d;%dH ", shrek->positionY + row + 1, shrek->positionX + col + 1);
+        }
+    }
+
+    moveShrek(map, direction);
+
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            printf("\033[%d;%dH%c", shrek->positionY + row + 1, shrek->positionX + col + 1, shrek->images[shrek->currentSpriteIndex].image[row][col]);
+        }
+    }
+
+    printf("\033[%d;%dH", map->height * CELL_SIZE + 1, 1);
+    printf("\033[?25h");
+
+    fflush(stdout);
+}
+
+void updateMapWithDonkey(Map *map) {
+    printf("\033[?25l");
+
+    moveDonkeyRandomly(map);
+
+    for (int i = 0; i < map->donkeyCount; ++i) {
+        if (map->donkeys[i] != NULL) {
+            for (int row = 0; row < SPRITE_HEIGHT; row++) {
+                for (int col = 0; col < SPRITE_WIDTH; col++) {
+                    printf("\033[%d;%dH ", map->donkeys[i]->positionY + row + 1, map->donkeys[i]->positionX + col + 1);
+                }
+            }
+
+            for (int row = 0; row < SPRITE_HEIGHT; row++) {
+                for (int col = 0; col < SPRITE_WIDTH; col++) {
+                    printf("\033[%d;%dH%c", map->donkeys[i]->positionY + row + 1, map->donkeys[i]->positionX + col + 1,
+                           map->donkeys[i]->image.image[row][col]);
+                }
+            }
+        }
+    }
 }
 
 int isLevelComplete(Map *map) {
@@ -253,62 +299,6 @@ int isShrekEatingGingy(Map *map) {
     return 0;
 }
 
-void loadNextMap(Map **map, Shrek *shrek, const char *filename) {
-    unsigned int startX, startY, flagX, flagY, gingyX, gingyY,currentMapIndex,childIndex;
-    Map *newMap = loadMapFromFile(filename, &startX, &startY, &flagX, &flagY, &gingyX, &gingyY,currentMapIndex,childIndex);
-    if (!newMap) {
-        printf("Failed to load map: %s\n", filename);
-        return;
-    }
-
-    free(*map);
-    *map = newMap;
-
-    newMap->flagX = flagX;
-    newMap->flagY = flagY;
-
-    newMap->gingyX = gingyX;
-    newMap->gingyY = gingyY;
-
-    int centeredX = startX;
-    int centeredY = startY;
-    putShrekOnMap(newMap, shrek, centeredX, centeredY);
-
-    printf("\033[H\033[J");
-    displayMap(newMap);
-}
-
-void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY) {
-    for (int row = 0; row < FLAG_SPRITE_SIZE; ++row) {
-        for (int col = 0; col < FLAG_SPRITE_SIZE; ++col) {
-            map->cells[flagY][flagX][row * CELL_SIZE + col] = FLAG_SPRITE[row][col];
-        }
-    }
-}
-
-void updateMapWithDonkey(Map *map) {
-    printf("\033[?25l");
-
-    moveDonkeyRandomly(map);
-
-    for (int i = 0; i < map->donkeyCount; ++i) {
-        if (map->donkeys[i] != NULL) {
-            for (int row = 0; row < SPRITE_HEIGHT; row++) {
-                for (int col = 0; col < SPRITE_WIDTH; col++) {
-                    printf("\033[%d;%dH ", map->donkeys[i]->positionY + row + 1, map->donkeys[i]->positionX + col + 1);
-                }
-            }
-
-            for (int row = 0; row < SPRITE_HEIGHT; row++) {
-                for (int col = 0; col < SPRITE_WIDTH; col++) {
-                    printf("\033[%d;%dH%c", map->donkeys[i]->positionY + row + 1, map->donkeys[i]->positionX + col + 1,
-                           map->donkeys[i]->image.image[row][col]);
-                }
-            }
-        }
-    }
-}
-
 bool isShrekCollisionDonkey(Map *map, Shrek *shrek) {
     for (int i = 0; i < map->donkeyCount; ++i) {
         Donkey *donkey = map->donkeys[i];
@@ -324,7 +314,6 @@ bool isShrekCollisionDonkey(Map *map, Shrek *shrek) {
     return false;
 }
 
-
 int isShrekScaringAChild(Map *map, unsigned int currentMapIndex) {
     for (int row = 0; row < SPRITE_HEIGHT; ++row) {
         for (int col = 0; col < SPRITE_WIDTH; ++col) {
@@ -332,8 +321,8 @@ int isShrekScaringAChild(Map *map, unsigned int currentMapIndex) {
             int shrekY = map->shrek->positionY + row;
 
             for (int childIndex = 0; childIndex < NUMBER_MAX_OF_SCARED_CHILDREN; ++childIndex) {
-                if (shrekX == positionXOfChildren[currentMapIndex][childIndex] &&
-                    shrekY == positionYOfChildren[currentMapIndex][childIndex] &&
+                if (shrekX == positionsXOfChildrenOnTheMap[currentMapIndex][childIndex] &&
+                    shrekY == positionsYOfChildrenOnTheMap[currentMapIndex][childIndex] &&
                     !childStatus[currentMapIndex][childIndex].scared) {
 
                     childStatus[currentMapIndex][childIndex].scared = true;
@@ -343,39 +332,4 @@ int isShrekScaringAChild(Map *map, unsigned int currentMapIndex) {
         }
     }
     return 0;
-}
-
-void displayScaredChildrenBelowTheMap(unsigned int scaredChildrenCount) {
-    unsigned int offsetX = 0;
-    unsigned int offsetY = HEIGHT_MAP + 2;
-
-    for (int i = 0; i < scaredChildrenCount; ++i) {
-        for (int row = 0; row < NUMBER_MAX_OF_SCARED_CHILDREN; ++row) {
-            printf("\033[%d;%dH", offsetY + row, offsetX + i + CHILD_GAP);
-            printf("     ");
-        }
-    }
-
-    for (int i = 0 ; i < scaredChildrenCount; ++i) {
-        int childOffsetX = offsetX + i * CHILD_GAP;
-        printf("\033[%d;%dH", offsetY, childOffsetX);
-        printf("(T_T)");
-        printf("\033[%d;%dH", offsetY + 1, childOffsetX);
-        printf(" /|\\ ");
-        printf("\033[%d;%dH", offsetY + 2, childOffsetX);
-        printf(" / \\ ");
-    }
-}
-
-void clearScaredChildrenBelowTheMap() {
-    int mapHeight = HEIGHT_MAP;
-    int offsetX = 0;
-    int offsetY = mapHeight + 2;
-
-    for (int i = 0; i < NUMBER_MAX_OF_SCARED_CHILDREN; ++i) {
-        for (int row = 0; row < NUMBER_MAX_OF_SCARED_CHILDREN; ++row) {
-            printf("\033[%d;%dH", offsetY + row, offsetX + i * CHILD_GAP);
-            printf("     ");
-        }
-    }
 }

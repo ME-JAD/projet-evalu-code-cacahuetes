@@ -25,7 +25,7 @@ char getMenuSelection() {
     char selection;
     do {
         selection = _getch();
-    } while (selection != '1' && selection != '2');
+    } while (selection != PLAY_IS_SELECTED && selection != QUIT_IS_SELECTED);
     return selection;
 }
 

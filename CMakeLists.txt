@@ -19,4 +19,6 @@ add_executable(Code-Cacahuetes main.c
         children.h
         collision.c
         collision.h
+        flag.c
+        flag.h
 )
