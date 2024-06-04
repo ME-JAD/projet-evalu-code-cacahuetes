@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include "sprite.h"
 
 #ifndef CODE_CACAHUETES_CHILDREN_H
@@ -14,19 +15,18 @@
 #define CHILD_SPRITE_BODY '|'
 #define CHILD_SPRITE_LEFT '/'
 #define CHILD_SPRITE_RIGHT '\\'
-#define NUMBER_OF_SCARED_CHILDREN 3
+#define NUMBER_MAX_OF_SCARED_CHILDREN 3
 #define NUMBER_OF_MAPS 3
 
-typedef struct Child{
+typedef struct Child {
     unsigned int positionX;
     unsigned int positionY;
     Sprite image;
+} Child;
 
-}Child;
+extern unsigned int positionXOfChildren[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN];
 
-extern unsigned int positionXOfChildren[NUMBER_OF_MAPS][NUMBER_OF_SCARED_CHILDREN];
-
-extern unsigned int positionYOfChildren[NUMBER_OF_MAPS][NUMBER_OF_SCARED_CHILDREN];
+extern unsigned int positionYOfChildren[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN];
 
 Child *createChild();
 

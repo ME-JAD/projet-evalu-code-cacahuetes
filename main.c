@@ -30,17 +30,23 @@ int main() {
             "../map2.txt",
             "../map3.txt"
     };
-    unsigned int currentMapIndex = 0;
 
+    unsigned int currentMapIndex = 0;
     unsigned int startX, startY, flagX, flagY, gingyX, gingyY;
+    char input;
+    unsigned int iterationCount = 0;
+    unsigned int scaredChildrenCount = 0;
+
     Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY, &gingyX, &gingyY);
     if (!map) {
         return 1;
     }
 
     Shrek *shrek = createShrek();
+
     int centeredX = startX;
     int centeredY = startY;
+
     putShrekOnMap(map, shrek, centeredX, centeredY);
     map->flagX = flagX;
     map->flagY = flagY;
@@ -50,9 +56,6 @@ int main() {
     clearScreen();
     displayMap(map);
 
-    char input;
-    unsigned int iterationCount = 0;
-
     do {
         input = _getch();
         if (input == 'W' || input == 'w') {
@@ -61,7 +64,10 @@ int main() {
         updateMapWithShrek(map, shrek, input);
 
         if (isLevelComplete(map)) {
+            scaredChildrenCount = 0;
+            clearScaredChildrenBelowTheMap();
             currentMapIndex++;
+
             if (currentMapIndex < sizeof(filenames) / sizeof(filenames[0])) {
                 loadNextMap(&map, shrek, filenames[currentMapIndex]);
             } else {
@@ -76,7 +82,7 @@ int main() {
 
         if (isShrekCollisionDonkey(map, shrek)) {
             displayDefeatMenu();
-            break; // Fin du jeu ou gérer la collision selon votre logique
+            break;
         }
 
         iterationCount++;
@@ -84,6 +90,11 @@ int main() {
 
         if (isShrekEatingGingy(map)) {
             activateSpeedBoost(map->shrek);
+        }
+
+        if (isShrekScaringAChild(map, currentMapIndex)) {
+            scaredChildrenCount++;
+            displayScaredChildrenBelowTheMap(scaredChildrenCount);
         }
 
         if (shrek->speed > 1 && difftime(time(NULL), shrek->boostStartTime) >= 5) {

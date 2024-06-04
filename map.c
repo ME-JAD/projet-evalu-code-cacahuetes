@@ -213,7 +213,7 @@ Map *loadMapFromFile(const char *filename,
     return map;
 }
 
-void putShrekOnMap(Map *map, Shrek *shrek, int x, int y) {
+void putShrekOnMap(Map *map, Shrek *shrek,int x, int y) {
     map->shrek = shrek;
     map->shrek->positionX = x * CELL_SIZE;
     map->shrek->positionY = y * CELL_SIZE;
@@ -253,7 +253,7 @@ int isShrekScaringAChild(Map *map,  unsigned int currentMapIndex) {
             int shrekX = map->shrek->positionX + col;
             int shrekY = map->shrek->positionY + row;
 
-            for (int childIndex = 0; childIndex < NUMBER_OF_SCARED_CHILDREN; ++childIndex) {
+            for (int childIndex = 0; childIndex < NUMBER_MAX_OF_SCARED_CHILDREN; ++childIndex) {
                 if (shrekX == positionXOfChildren[currentMapIndex][childIndex] &&
                     shrekY == positionYOfChildren[currentMapIndex][childIndex]) {
                     return 1;
@@ -301,18 +301,16 @@ void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY) {
 void updateMapWithDonkey(Map *map) {
     printf("\033[?25l");
 
-    moveDonkeyRandomly(map); // Déplacez les ânes aléatoirement
+    moveDonkeyRandomly(map);
 
     for (int i = 0; i < map->donkeyCount; ++i) {
         if (map->donkeys[i] != NULL) {
-            // Effacez l'âne de son ancienne position
             for (int row = 0; row < SPRITE_HEIGHT; row++) {
                 for (int col = 0; col < SPRITE_WIDTH; col++) {
                     printf("\033[%d;%dH ", map->donkeys[i]->positionY + row + 1, map->donkeys[i]->positionX + col + 1);
                 }
             }
 
-            // Affichez l'âne dans sa nouvelle position
             for (int row = 0; row < SPRITE_HEIGHT; row++) {
                 for (int col = 0; col < SPRITE_WIDTH; col++) {
                     printf("\033[%d;%dH%c", map->donkeys[i]->positionY + row + 1, map->donkeys[i]->positionX + col + 1,
@@ -327,7 +325,6 @@ bool isShrekCollisionDonkey(Map *map, Shrek *shrek) {
     for (int i = 0; i < map->donkeyCount; ++i) {
         Donkey *donkey = map->donkeys[i];
         if (donkey != NULL) {
-            // Vérifier la collision de Shrek avec l'âne
             if (shrek->positionX < donkey->positionX + SPRITE_WIDTH &&
                 shrek->positionX + SPRITE_WIDTH > donkey->positionX &&
                 shrek->positionY < donkey->positionY + SPRITE_HEIGHT &&
@@ -337,4 +334,39 @@ bool isShrekCollisionDonkey(Map *map, Shrek *shrek) {
         }
     }
     return false;
+}
+
+void displayScaredChildrenBelowTheMap(unsigned int scaredChildrenCount) {
+    unsigned int offsetX = 0;
+    unsigned int offsetY = HEIGHT_MAP + 2;
+
+    for (int i = 0; i < scaredChildrenCount; ++i) {
+        for (int row = 0; row < 3; ++row) {
+            printf("\033[%d;%dH", offsetY + row, offsetX + i + CHILD_GAP);
+            printf("     ");
+        }
+    }
+
+    for (int i = 0 ; i < scaredChildrenCount; ++i) {
+        int childOffsetX = offsetX + i * CHILD_GAP;
+        printf("\033[%d;%dH", offsetY, childOffsetX);
+        printf("(T_T)");
+        printf("\033[%d;%dH", offsetY + 1, childOffsetX);
+        printf(" /|\\ ");
+        printf("\033[%d;%dH", offsetY + 2, childOffsetX);
+        printf(" / \\ ");
+    }
+}
+
+void clearScaredChildrenBelowTheMap() {
+    int mapHeight = HEIGHT_MAP;
+    int offsetX = 0;
+    int offsetY = mapHeight + 2;
+
+    for (int i = 0; i < NUMBER_MAX_OF_SCARED_CHILDREN; ++i) {
+        for (int row = 0; row < NUMBER_MAX_OF_SCARED_CHILDREN; ++row) {
+            printf("\033[%d;%dH", offsetY + row, offsetX + i * CHILD_GAP);
+            printf("     ");
+        }
+    }
 }

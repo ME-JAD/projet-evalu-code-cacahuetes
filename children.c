@@ -29,12 +29,12 @@ Child *createChild() {
     return newChild;
 }
 
-unsigned int positionXOfChildren[NUMBER_OF_MAPS][NUMBER_OF_SCARED_CHILDREN] = {
+unsigned int positionXOfChildren[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN] = {
         {245, 225, 350}, // enf1 (X1)   ;  enft2(X1)   ;  enft3(X1)
         {25, 340, 355},  // enf1 (X2)   ;  enft2(X2)   ;  enft3(X2)
         {125, 165, 150}  // enf1 (X3)   ;  enft2(X3)   ;  enft3(X3)
 };
-unsigned int positionYOfChildren[NUMBER_OF_MAPS][NUMBER_OF_SCARED_CHILDREN] = {
+unsigned int positionYOfChildren[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN] = {
         {100, 10, 10}, // enf1 (Y1)   ;  enft2(Y1)   ;  enft3(Y1)
         {10, 105, 45}, // enf1 (Y2)   ;  enft2(Y2)   ;  enft3(Y2)
         {70, 105, 25}  // enf1 (Y3)   ;  enft2(Y3)   ;  enft3(Y3)
