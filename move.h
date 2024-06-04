@@ -12,4 +12,9 @@ void moveShrek(Map *map, char direction);
 
 void activateSpeedBoost(Shrek *shrek);
 
+void moveDonkeyRandomly(Map *map);
+
+
+
+
 #endif //CODE_CACAHUETES_MOVE_H

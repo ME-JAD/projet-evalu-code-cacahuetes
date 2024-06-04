@@ -15,3 +15,4 @@ int checkCollision(Map *map, int newX, int newY) {
     }
     return 0;
 }
+
