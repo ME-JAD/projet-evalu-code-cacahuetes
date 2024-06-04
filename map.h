@@ -63,4 +63,6 @@ void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY);
 
 int isShrekEatingGingy(Map *map);
 
+int isShrekScaringAChild(Map *map,  unsigned int currentMapIndex);
+
 #endif //CODE_CACAHUETES_MAP_H

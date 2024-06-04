@@ -206,6 +206,24 @@ int isShrekEatingGingy(Map *map) {
     return 0;
 }
 
+int isShrekScaringAChild(Map *map,  unsigned int currentMapIndex) {
+    for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+        for (int col = 0; col < SPRITE_WIDTH; ++col) {
+            int shrekX = map->shrek->positionX + col;
+            int shrekY = map->shrek->positionY + row;
+
+            for (int childIndex = 0; childIndex < NUMBER_OF_SCARED_CHILDREN; ++childIndex) {
+                if (shrekX == positionXOfChildren[currentMapIndex][childIndex] &&
+                    shrekY == positionYOfChildren[currentMapIndex][childIndex]) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+
 void loadNextMap(Map **map, Shrek *shrek, const char *filename) {
     unsigned int startX, startY, flagX, flagY, gingyX, gingyY;
     Map *newMap = loadMapFromFile(filename, &startX, &startY, &flagX, &flagY, &gingyX, &gingyY);
