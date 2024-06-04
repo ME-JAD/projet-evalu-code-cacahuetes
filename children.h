@@ -24,9 +24,15 @@ typedef struct Child {
     Sprite image;
 } Child;
 
+typedef struct ChildStatus {
+    bool scared;
+} ChildStatus;
+
 extern unsigned int positionXOfChildren[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN];
 
 extern unsigned int positionYOfChildren[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN];
+
+extern ChildStatus childStatus[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN];
 
 Child *createChild();
 

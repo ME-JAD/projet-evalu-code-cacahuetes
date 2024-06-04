@@ -39,3 +39,9 @@ unsigned int positionYOfChildren[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN] 
         {10, 105, 45}, // enf1 (Y2)   ;  enft2(Y2)   ;  enft3(Y2)
         {70, 105, 25}  // enf1 (Y3)   ;  enft2(Y3)   ;  enft3(Y3)
 };
+
+ChildStatus childStatus[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN] = {
+        {{false}, {false}, {false}},
+        {{false}, {false}, {false}},
+        {{false}, {false}, {false}}
+};
