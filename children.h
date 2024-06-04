@@ -16,7 +16,10 @@
 #define CHILD_SPRITE_LEFT '/'
 #define CHILD_SPRITE_RIGHT '\\'
 #define NUMBER_MAX_OF_SCARED_CHILDREN 3
-#define NUMBER_OF_MAPS 3
+#define NUMBER_TOTAL_OF_MAPS 3
+#define GAP_OF_CHILDREN_BELOW_THE_MAP 6
+#define HEIGHT_MAP 120
+#define WIDTH_MAP 380
 
 typedef struct Child {
     unsigned int positionX;
@@ -28,12 +31,16 @@ typedef struct ChildStatus {
     bool scared;
 } ChildStatus;
 
-extern unsigned int positionXOfChildren[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN];
+extern unsigned int positionsXOfChildrenOnTheMap[NUMBER_TOTAL_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN];
 
-extern unsigned int positionYOfChildren[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN];
+extern unsigned int positionsYOfChildrenOnTheMap[NUMBER_TOTAL_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN];
 
-extern ChildStatus childStatus[NUMBER_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN];
+extern ChildStatus childStatus[NUMBER_TOTAL_OF_MAPS][NUMBER_MAX_OF_SCARED_CHILDREN];
 
 Child *createChild();
+
+void displayScaredChildrenBelowTheMap(unsigned int scaredChildrenCount);
+
+void clearScaredChildrenBelowTheMap();
 
 #endif //CODE_CACAHUETES_CHILDREN_H

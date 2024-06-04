@@ -1,13 +1,9 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include <conio.h>
 #include <unistd.h>
 
-#include "shrek.h"
-#include "ane.h"
+#include "menu.h"
 #include "move.h"
 #include "map.h"
-#include "menu.h"
 
 void clearScreen() {
     printf("\033[H\033[J");
@@ -20,7 +16,7 @@ int main() {
 
     char menuSelection = getMenuSelection();
 
-    if (menuSelection == '2') {
+    if (menuSelection == QUIT_IS_SELECTED) {
         printf("\nExiting the game...\n");
         return 0;
     }

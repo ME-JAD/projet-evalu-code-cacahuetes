@@ -41,8 +41,7 @@ void moveShrek(Map *map, char direction) {
 
     map->shrek->positionX = newX;
     map->shrek->positionY = newY;
-
-    map->shrek->currentSpriteIndex = (map->shrek->currentSpriteIndex + 1) % SPRITE_COUNT;
+    map->shrek->currentSpriteIndex = (map->shrek->currentSpriteIndex + 1) % SHREK_SPRITE_COUNT;
 
     for (int row = 0; row < SPRITE_HEIGHT; row++) {
         for (int col = 0; col < SPRITE_WIDTH; col++) {
@@ -50,12 +49,11 @@ void moveShrek(Map *map, char direction) {
                    map->shrek->images[map->shrek->currentSpriteIndex].image[row][col]);
         }
     }
-
     fflush(stdout);
 }
 
 void activateSpeedBoost(Shrek *shrek) {
-    shrek->speed = 3;
+    shrek->speed = SPEED_BOOST;
     shrek->boostStartTime = time(NULL);
 }
 
@@ -65,18 +63,18 @@ void moveDonkeyRandomly(Map *map) {
             int oldX = 0;
             int oldY = 0;
 
-            int direction = rand() % 4;
+            int direction = rand() % NUMBER_OF_POSSIBLE_DIRECTIONS;
             switch (direction) {
-                case 0: // Move up
+                case 0:
                     oldY = -CELL_SIZE;
                     break;
-                case 1: // Move down
+                case 1:
                     oldY = CELL_SIZE;
                     break;
-                case 2: // Move left
+                case 2:
                     oldX = -CELL_SIZE;
                     break;
-                case 3: // Move right
+                case 3:
                     oldX = CELL_SIZE;
                     break;
             }
@@ -97,14 +95,12 @@ void moveDonkeyRandomly(Map *map) {
             map->donkeys[i]->positionX = newX;
             map->donkeys[i]->positionY = newY;
 
-
             for (int row = 0; row < SPRITE_HEIGHT; row++) {
                 for (int col = 0; col < SPRITE_WIDTH; col++) {
                     printf("\033[%d;%dH%c", map->donkeys[i]->positionY + row + 1, map->donkeys[i]->positionX + col + 1,
                            map->donkeys[i]->image.image[row][col]);
                 }
             }
-
             fflush(stdout);
         }
     }

@@ -3,49 +3,33 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "shrek.h"
 #include "ane.h"
 #include "gingy.h"
 #include "children.h"
-
-#define WIDTH_MAP 380
-#define HEIGHT_MAP 120
+#include "flag.h"
 
 #define CELL_SIZE 5
-#define SPRITE_WIDTH 5
-#define SPRITE_HEIGHT 5
 #define BORDER_MAP_SPRITE '#'
-#define FLAG_SPRITE_SIZE 5
-#define MAX_DONKEYS 10
-#define CHILD_GAP 6
 
 typedef struct Map {
     int width;
     int height;
     char ***cells;
     Shrek *shrek;
-    Donkey *donkeys [MAX_DONKEYS];
-    int donkeyCount;
+    Donkey *donkeys [NUMBER_MAX_OF_DONKEYS];
     Gingy *gingy;
     Child *children;
+    unsigned int donkeyCount;
     unsigned int flagX;
     unsigned int flagY;
     unsigned int gingyX;
     unsigned int gingyY;
 } Map;
 
-extern const char FLAG_SPRITE[FLAG_SPRITE_SIZE][FLAG_SPRITE_SIZE];
-
-void putGingyOnMap (Map *map, Gingy *gingy, unsigned int gingyX, unsigned int gingyY);
-
-void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int donkeyY);
-
-void putChildOnMap (Map *map, Child *child, unsigned int childX, unsigned int childY, unsigned int currentMapIndex, unsigned int childIndex);
-
-void displayMap(Map *map);
-
 Map *createMap(unsigned int width, unsigned int height);
-
+void displayMap(Map *map);
 Map *loadMapFromFile(const char *filename,
                      unsigned int *startX,
                      unsigned int *startY,
@@ -55,27 +39,20 @@ Map *loadMapFromFile(const char *filename,
                      unsigned int *gingyY,
                      unsigned int currentMapIndex,
                      unsigned int childIndex);
-
-void putShrekOnMap(Map *map, Shrek *shrek, int x, int y);
-
-void updateMapWithShrek(Map *map, Shrek *shrek, char direction);
-
-int isLevelComplete(Map *map);
-
 void loadNextMap(Map **map, Shrek *shrek, const char *filename);
 
+void putShrekOnMap(Map *map, Shrek *shrek, int x, int y);
+void putGingyOnMap (Map *map, Gingy *gingy, unsigned int gingyX, unsigned int gingyY);
+void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int donkeyY);
+void putChildOnMap (Map *map, Child *child, unsigned int childX, unsigned int childY, unsigned int currentMapIndex, unsigned int childIndex);
 void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY);
 
-int isShrekEatingGingy(Map *map);
-
-int isShrekScaringAChild(Map *map,  unsigned int currentMapIndex);
-
+void updateMapWithShrek(Map *map, Shrek *shrek, char direction);
 void updateMapWithDonkey(Map *map);
 
+int isLevelComplete(Map *map);
+int isShrekEatingGingy(Map *map);
 bool isShrekCollisionDonkey(Map *map, Shrek *shrek);
-
-void displayScaredChildrenBelowTheMap(unsigned int scaredChildrenCount);
-
-void clearScaredChildrenBelowTheMap();
+int isShrekScaringAChild(Map *map,  unsigned int currentMapIndex);
 
 #endif //CODE_CACAHUETES_MAP_H

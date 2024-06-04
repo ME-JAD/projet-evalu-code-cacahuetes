@@ -12,13 +12,13 @@
 #define DONKEY_SPRITE_BODY_R ')'
 #define DONKEY_SPRITE_TAIL '~'
 #define DONKEY_SPRITE_PAW '|'
+#define NUMBER_MAX_OF_DONKEYS 10
 
 typedef struct Donkey{
     unsigned int positionX;
     unsigned int positionY;
     bool collision;
     Sprite image;
-
 }Donkey;
 
 Donkey *createDonkey();
