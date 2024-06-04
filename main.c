@@ -73,6 +73,12 @@ int main() {
         if (iterationCount % 2 == 0) {
             updateMapWithDonkey(map);
         }
+
+        if (isShrekCollisionDonkey(map, shrek)) {
+            displayDefeatMenu();
+            break; // Fin du jeu ou gérer la collision selon votre logique
+        }
+
         iterationCount++;
         usleep(50);
 

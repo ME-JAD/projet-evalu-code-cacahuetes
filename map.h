@@ -67,4 +67,6 @@ int isShrekEatingGingy(Map *map);
 
 void updateMapWithDonkey(Map *map);
 
+bool isShrekCollisionDonkey(Map *map, Shrek *shrek);
+
 #endif //CODE_CACAHUETES_MAP_H
