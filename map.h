@@ -17,6 +17,7 @@
 #define BORDER_MAP_SPRITE '#'
 #define FLAG_SPRITE_SIZE 5
 #define MAX_DONKEYS 10
+#define CHILD_GAP 6
 
 typedef struct Map {
     int width;
@@ -70,5 +71,9 @@ int isShrekScaringAChild(Map *map,  unsigned int currentMapIndex);
 void updateMapWithDonkey(Map *map);
 
 bool isShrekCollisionDonkey(Map *map, Shrek *shrek);
+
+void displayScaredChildrenBelowTheMap(unsigned int scaredChildrenCount);
+
+void clearScaredChildrenBelowTheMap();
 
 #endif //CODE_CACAHUETES_MAP_H
