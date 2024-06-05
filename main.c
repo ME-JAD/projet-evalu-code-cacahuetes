@@ -1,5 +1,6 @@
 #include <conio.h>
 #include <unistd.h>
+#include <time.h>
 
 #include "menu.h"
 #include "move.h"
@@ -30,10 +31,9 @@ int main() {
     unsigned int currentMapIndex = 0;
     unsigned int startX, startY, flagX, flagY, gingyX, gingyY;
     char input;
-    unsigned int iterationCount = 0;
     unsigned int scaredChildrenCount = 0;
 
-    Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY, &gingyX, &gingyY,currentMapIndex,scaredChildrenCount);
+    Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY, &gingyX, &gingyY, currentMapIndex, scaredChildrenCount);
     if (!map) {
         return 1;
     }
@@ -52,53 +52,63 @@ int main() {
     clearScreen();
     displayMap(map);
 
+    // Variables pour gérer le déplacement périodique des ânes
+    clock_t lastMoveTime = clock();
+    const double moveInterval = 0.5 * CLOCKS_PER_SEC; // Intervalle de mouvement de 0,5 seconde
+
     do {
-        input = _getch();
-        if (input == 'W' || input == 'w') {
-            break;
-        }
-        updateMapWithShrek(map, shrek, input);
-
-        if (isLevelComplete(map, currentMapIndex)) {
-            scaredChildrenCount = 0;
-            clearScaredChildrenBelowTheMap();
-            currentMapIndex++;
-
-            if (currentMapIndex < sizeof(filenames) / sizeof(filenames[0])) {
-                loadNextMap(&map, shrek, filenames[currentMapIndex]);
-            } else {
-                displayVictoryMenu();
+        // Vérifier si une touche a été pressée sans bloquer
+        if (_kbhit()) {
+            input = _getch();
+            if (input == 'W' || input == 'w') {
                 break;
+            }
+            updateMapWithShrek(map, shrek, input);
+
+            if (isLevelComplete(map, currentMapIndex)) {
+                scaredChildrenCount = 0;
+                clearScaredChildrenBelowTheMap();
+                currentMapIndex++;
+
+                if (currentMapIndex < sizeof(filenames) / sizeof(filenames[0])) {
+                    loadNextMap(&map, shrek, filenames[currentMapIndex]);
+                } else {
+                    displayVictoryMenu();
+                    break;
+                }
+            }
+
+            if (isShrekCollisionDonkey(map, shrek)) {
+                displayDefeatMenu();
+                break;
+            }
+
+            if (isShrekEatingGingy(map)) {
+                activateSpeedBoost(map->shrek);
+            }
+
+            if (isShrekScaringAChild(map, currentMapIndex)) {
+                scaredChildrenCount++;
+                displayScaredChildrenBelowTheMap(scaredChildrenCount);
+            }
+
+            if (shrek->speed > 1 && difftime(time(NULL), shrek->boostStartTime) >= 5) {
+                shrek->speed = 1;
             }
         }
 
-        if (iterationCount % 2 == 0) {
-            updateMapWithDonkey(map);
+        // Gérer le déplacement périodique des ânes
+        clock_t currentTime = clock();
+        if ((currentTime - lastMoveTime) >= moveInterval) {
+            moveDonkeysPeriodically(map);
+            lastMoveTime = currentTime;
         }
 
-        if (isShrekCollisionDonkey(map, shrek)) {
-            displayDefeatMenu();
-            break;
-        }
-
-        iterationCount++;
-        usleep(50);
-
-        if (isShrekEatingGingy(map)) {
-            activateSpeedBoost(map->shrek);
-        }
-
-        if (isShrekScaringAChild(map, currentMapIndex)) {
-            scaredChildrenCount++;
-            displayScaredChildrenBelowTheMap(scaredChildrenCount);
-        }
-
-        if (shrek->speed > 1 && difftime(time(NULL), shrek->boostStartTime) >= 5) {
-            shrek->speed = 1;
-        }
+        usleep(10000); // Pause courte pour limiter l'utilisation du CPU
 
     } while (1);
 
+    // Libérer la mémoire
     free(shrek);
     for (int i = 0; i < map->height; ++i) {
         for (int j = 0; j < map->width; ++j) {
