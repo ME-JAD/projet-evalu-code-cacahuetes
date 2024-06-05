@@ -235,7 +235,7 @@ void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
     }
 
     moveShrek(map, direction);
-    checkFlagCollision(map);
+    checkIfShrekIsOnTheFlag(map);
 
     for (int row = 0; row < SPRITE_HEIGHT; ++row) {
         for (int col = 0; col < SPRITE_WIDTH; ++col) {
@@ -319,7 +319,7 @@ bool isShrekCollisionDonkey(Map *map, Shrek *shrek) {
     return false;
 }
 
-void checkFlagCollision(Map *map) {
+void checkIfShrekIsOnTheFlag(Map *map) {
     int shrekX = map->shrek->positionX / CELL_SIZE;
     int shrekY = map->shrek->positionY / CELL_SIZE;
 

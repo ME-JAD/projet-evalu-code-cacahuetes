@@ -53,7 +53,7 @@ void updateMapWithDonkey(Map *map);
 int isLevelComplete(Map *map, unsigned int currentMapIndex);
 int isShrekEatingGingy(Map *map);
 bool isShrekCollisionDonkey(Map *map, Shrek *shrek);
-void checkFlagCollision(Map *map);
+void checkIfShrekIsOnTheFlag(Map *map);
 int isShrekScaringAChild(Map *map,  unsigned int currentMapIndex);
 int areAllChildrenScared(Map *map, unsigned int currentMapIndex);
 
