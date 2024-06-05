@@ -14,6 +14,7 @@ typedef struct Shrek {
     unsigned int positionY;
     unsigned int currentSpriteIndex;
     unsigned int speed;
+    char direction;
     time_t boostStartTime;
     Sprite images[SHREK_SPRITE_COUNT];
 } Shrek;

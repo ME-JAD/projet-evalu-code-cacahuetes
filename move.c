@@ -5,6 +5,8 @@ void moveShrek(Map *map, char direction) {
     int deltaX = 0;
     int deltaY = 0;
 
+    map->shrek->direction = direction;
+
     switch (direction) {
         case 'Z':
         case 'z':
