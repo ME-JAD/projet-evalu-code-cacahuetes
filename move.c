@@ -105,3 +105,12 @@ void moveDonkeyRandomly(Map *map) {
         }
     }
 }
+
+void moveDonkeysPeriodically(Map *map) {
+    static int counter = 0;
+    if (counter % 2 == 0) { // Ajustez la valeur pour changer la fréquence du mouvement des ânes
+        moveDonkeyRandomly(map);
+        updateMapWithDonkey(map);
+    }
+    counter++;
+}
