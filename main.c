@@ -59,7 +59,7 @@ int main() {
         }
         updateMapWithShrek(map, shrek, input);
 
-        if (isLevelComplete(map)) {
+        if (isLevelComplete(map, currentMapIndex)) {
             scaredChildrenCount = 0;
             clearScaredChildrenBelowTheMap();
             currentMapIndex++;

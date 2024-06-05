@@ -50,9 +50,10 @@ void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY);
 void updateMapWithShrek(Map *map, Shrek *shrek, char direction);
 void updateMapWithDonkey(Map *map);
 
-int isLevelComplete(Map *map);
+int isLevelComplete(Map *map, unsigned int currentMapIndex);
 int isShrekEatingGingy(Map *map);
 bool isShrekCollisionDonkey(Map *map, Shrek *shrek);
 int isShrekScaringAChild(Map *map,  unsigned int currentMapIndex);
+int areAllChildrenScared(Map *map, unsigned int currentMapIndex);
 
 #endif //CODE_CACAHUETES_MAP_H

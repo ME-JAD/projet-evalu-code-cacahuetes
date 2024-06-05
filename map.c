@@ -271,7 +271,10 @@ void updateMapWithDonkey(Map *map) {
     }
 }
 
-int isLevelComplete(Map *map) {
+int isLevelComplete(Map *map, unsigned int currentMapIndex) {
+    if (!areAllChildrenScared(map, currentMapIndex)) {
+        return 0;
+    }
     for (int row = 0; row < SPRITE_HEIGHT; ++row) {
         for (int col = 0; col < SPRITE_WIDTH; ++col) {
             int shrekX = map->shrek->positionX + col;
@@ -284,6 +287,7 @@ int isLevelComplete(Map *map) {
     }
     return 0;
 }
+
 
 int isShrekEatingGingy(Map *map) {
     for (int row = 0; row < SPRITE_HEIGHT; ++row) {
@@ -332,4 +336,14 @@ int isShrekScaringAChild(Map *map, unsigned int currentMapIndex) {
         }
     }
     return 0;
+}
+
+
+int areAllChildrenScared(Map *map, unsigned int currentMapIndex) {
+    for (int childIndex = 0; childIndex < NUMBER_MAX_OF_SCARED_CHILDREN; ++childIndex) {
+        if (!childStatus[currentMapIndex][childIndex].scared) {
+            return 0;
+        }
+    }
+    return 1;
 }
