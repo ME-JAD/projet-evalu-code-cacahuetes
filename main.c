@@ -33,7 +33,8 @@ int main() {
     char input;
     unsigned int scaredChildrenCount = 0;
 
-    Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY, &gingyX, &gingyY, currentMapIndex, scaredChildrenCount);
+    Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY, &gingyX, &gingyY,
+                               currentMapIndex, scaredChildrenCount);
     if (!map) {
         return 1;
     }
@@ -52,7 +53,6 @@ int main() {
     clearScreen();
     displayMap(map);
 
-
     do {
         input = _getch();
         if (input == 'W' || input == 'w') {
@@ -60,63 +60,60 @@ int main() {
         }
         updateMapWithShrek(map, shrek, input, currentMapIndex);
 
-    clock_t lastMoveTime = clock();
-    const double moveInterval = 0.5 * CLOCKS_PER_SEC; 
+        clock_t lastMoveTime = clock();
+        const double moveInterval = 0.5 * CLOCKS_PER_SEC;
 
-    do {
-        if (_kbhit()) {
-            input = _getch();
-            if (input == 'W' || input == 'w') {
-                break;
-            }
-            updateMapWithShrek(map, shrek, input);
-
-            if (isLevelComplete(map, currentMapIndex)) {
-                scaredChildrenCount = 0;
-                clearScaredChildrenBelowTheMap();
-                currentMapIndex++;
-
-                if (currentMapIndex < sizeof(filenames) / sizeof(filenames[0])) {
-                    loadNextMap(&map, shrek, filenames[currentMapIndex]);
-                } else {
-                    displayVictoryMenu();
+        do {
+            if (_kbhit()) {
+                input = _getch();
+                if (input == 'W' || input == 'w') {
                     break;
+                }
+                updateMapWithShrek(map, shrek, input, currentMapIndex);
+
+                if (isLevelComplete(map, currentMapIndex)) {
+                    scaredChildrenCount = 0;
+                    clearScaredChildrenBelowTheMap();
+                    currentMapIndex++;
+
+                    if (currentMapIndex < sizeof(filenames) / sizeof(filenames[0])) {
+                        loadNextMap(&map, shrek, filenames[currentMapIndex]);
+                    } else {
+                        displayVictoryMenu();
+                        break;
+                    }
+                }
+
+                if (isShrekCollisionDonkey(map, shrek)) {
+                    displayDefeatMenu();
+                    break;
+                }
+
+                if (isShrekEatingGingy(map)) {
+                    activateSpeedBoost(map->shrek);
+                }
+
+                if (isShrekScaringAChild(map, currentMapIndex)) {
+                    scaredChildrenCount++;
+                    displayScaredChildrenBelowTheMap(scaredChildrenCount);
+                }
+
+                if (shrek->speed > 1 && difftime(time(NULL), shrek->boostStartTime) >= 5) {
+                    shrek->speed = 1;
                 }
             }
 
-        if (iterationCount % 2 == 0) {
-            updateMapWithDonkey(map, currentMapIndex);
-        }
-
-            if (isShrekCollisionDonkey(map, shrek)) {
-                displayDefeatMenu();
-                break;
+            clock_t currentTime = clock();
+            if ((currentTime - lastMoveTime) >= moveInterval) {
+                moveDonkeysPeriodically(map, currentMapIndex);
+                lastMoveTime = currentTime;
             }
 
-            if (isShrekEatingGingy(map)) {
-                activateSpeedBoost(map->shrek);
-            }
+            usleep(10000);
 
-            if (isShrekScaringAChild(map, currentMapIndex)) {
-                scaredChildrenCount++;
-                displayScaredChildrenBelowTheMap(scaredChildrenCount);
-            }
-
-            if (shrek->speed > 1 && difftime(time(NULL), shrek->boostStartTime) >= 5) {
-                shrek->speed = 1;
-            }
-        }
-
-        clock_t currentTime = clock();
-        if ((currentTime - lastMoveTime) >= moveInterval) {
-            moveDonkeysPeriodically(map);
-            lastMoveTime = currentTime;
-        }
-
-        usleep(10000); 
+        } while (1);
 
     } while (1);
-
 
     free(shrek);
     for (int i = 0; i < map->height; ++i) {

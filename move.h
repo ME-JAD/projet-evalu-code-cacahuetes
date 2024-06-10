@@ -16,6 +16,6 @@ void activateSpeedBoost(Shrek *shrek);
 
 void moveDonkeyRandomly(Map *map, unsigned int currentMapIndex);
 
-void moveDonkeysPeriodically(Map *map);
+void moveDonkeysPeriodically(Map *map, unsigned int currentMapIndex);
 
 #endif //CODE_CACAHUETES_MOVE_H

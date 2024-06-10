@@ -108,11 +108,11 @@ void moveDonkeyRandomly(Map *map, unsigned int currentMapIndex) {
     }
 }
 
-void moveDonkeysPeriodically(Map *map) {
+void moveDonkeysPeriodically(Map *map, unsigned int currentMapIndex) {
     static int counter = 0;
-    if (counter % 2 == 0) { // Ajustez la valeur pour changer la fréquence du mouvement des ânes
-        moveDonkeyRandomly(map);
-        updateMapWithDonkey(map);
+    if (counter % 2 == 0) {
+        moveDonkeyRandomly(map, currentMapIndex);
+        updateMapWithDonkey(map, currentMapIndex);
     }
     counter++;
 }
