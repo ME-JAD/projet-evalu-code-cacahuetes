@@ -225,7 +225,7 @@ void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY) {
 }
 
 
-void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
+void updateMapWithShrek(Map *map, Shrek *shrek, char direction, unsigned int currentMapIndex) {
     printf("\033[?25l");
 
     for (int row = 0; row < SPRITE_HEIGHT; ++row) {
@@ -234,7 +234,8 @@ void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
         }
     }
 
-    moveShrek(map, direction);
+    moveShrek(map, direction, currentMapIndex);
+    checkIfShrekIsOnTheFlag(map);
 
     for (int row = 0; row < SPRITE_HEIGHT; ++row) {
         for (int col = 0; col < SPRITE_WIDTH; ++col) {
@@ -248,10 +249,10 @@ void updateMapWithShrek(Map *map, Shrek *shrek, char direction) {
     fflush(stdout);
 }
 
-void updateMapWithDonkey(Map *map) {
+void updateMapWithDonkey(Map *map, unsigned int currentMapIndex) {
     printf("\033[?25l");
 
-    moveDonkeyRandomly(map);
+    moveDonkeyRandomly(map,currentMapIndex);
 
     for (int i = 0; i < map->donkeyCount; ++i) {
         if (map->donkeys[i] != NULL) {
@@ -318,6 +319,33 @@ bool isShrekCollisionDonkey(Map *map, Shrek *shrek) {
     return false;
 }
 
+void checkIfShrekIsOnTheFlag(Map *map) {
+    int shrekX = map->shrek->positionX / CELL_SIZE;
+    int shrekY = map->shrek->positionY / CELL_SIZE;
+
+    if (shrekX == map->flagX && shrekY == map->flagY) {
+        if (!areAllChildrenScared(map, 0)) {
+            for (int row = 0; row < SPRITE_HEIGHT; ++row) {
+                for (int col = 0; col < SPRITE_WIDTH; ++col) {
+                    map->cells[shrekY][shrekX][row * CELL_SIZE + col] = ' ';
+                }
+            }
+
+            placeFlagOnMap(map, map->flagX, map->flagY);
+
+            switch (map->shrek->direction) {
+                case 's': map->shrek->positionY += CELL_SIZE; break;
+                case 'z': map->shrek->positionY -= CELL_SIZE; break;
+                case 'd': map->shrek->positionX += CELL_SIZE; break;
+                case 'q': map->shrek->positionX -= CELL_SIZE; break;
+                default: break;
+            }
+            putShrekOnMap(map, map->shrek, map->shrek->positionX / CELL_SIZE, map->shrek->positionY / CELL_SIZE);
+        }
+    }
+}
+
+
 int isShrekScaringAChild(Map *map, unsigned int currentMapIndex) {
     for (int row = 0; row < SPRITE_HEIGHT; ++row) {
         for (int col = 0; col < SPRITE_WIDTH; ++col) {
@@ -337,7 +365,6 @@ int isShrekScaringAChild(Map *map, unsigned int currentMapIndex) {
     }
     return 0;
 }
-
 
 int areAllChildrenScared(Map *map, unsigned int currentMapIndex) {
     for (int childIndex = 0; childIndex < NUMBER_MAX_OF_SCARED_CHILDREN; ++childIndex) {

@@ -47,12 +47,13 @@ void putDonkeyOnMap(Map *map, Donkey *donkey, unsigned int donkeyX, unsigned int
 void putChildOnMap (Map *map, Child *child, unsigned int childX, unsigned int childY, unsigned int currentMapIndex, unsigned int childIndex);
 void placeFlagOnMap(Map *map, unsigned int flagX, unsigned int flagY);
 
-void updateMapWithShrek(Map *map, Shrek *shrek, char direction);
-void updateMapWithDonkey(Map *map);
+void updateMapWithShrek(Map *map, Shrek *shrek, char direction, unsigned int currentMapIndex);
+void updateMapWithDonkey(Map *map, unsigned int currentMapIndex);
 
 int isLevelComplete(Map *map, unsigned int currentMapIndex);
 int isShrekEatingGingy(Map *map);
 bool isShrekCollisionDonkey(Map *map, Shrek *shrek);
+void checkIfShrekIsOnTheFlag(Map *map);
 int isShrekScaringAChild(Map *map,  unsigned int currentMapIndex);
 int areAllChildrenScared(Map *map, unsigned int currentMapIndex);
 

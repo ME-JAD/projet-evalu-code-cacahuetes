@@ -1,9 +1,11 @@
 #include "move.h"
 #include "collision.h"
 
-void moveShrek(Map *map, char direction) {
+void moveShrek(Map *map, char direction, unsigned int currentMapIndex) {
     int deltaX = 0;
     int deltaY = 0;
+
+    map->shrek->direction = direction;
 
     switch (direction) {
         case 'Z':
@@ -29,7 +31,7 @@ void moveShrek(Map *map, char direction) {
     int newX = map->shrek->positionX + deltaX;
     int newY = map->shrek->positionY + deltaY;
 
-    if (checkCollision(map, newX, newY)) {
+    if (checkCollision(map, newX, newY,currentMapIndex)) {
         return;
     }
 
@@ -57,7 +59,7 @@ void activateSpeedBoost(Shrek *shrek) {
     shrek->boostStartTime = time(NULL);
 }
 
-void moveDonkeyRandomly(Map *map) {
+void moveDonkeyRandomly(Map *map, unsigned int currentMapIndex) {
     for (int i = 0; i < map->donkeyCount; ++i) {
         if (map->donkeys[i] != NULL) {
             int oldX = 0;
@@ -82,7 +84,7 @@ void moveDonkeyRandomly(Map *map) {
             int newX = map->donkeys[i]->positionX + oldX;
             int newY = map->donkeys[i]->positionY + oldY;
 
-            if (checkCollision(map, newX, newY)) {
+            if (checkCollision(map, newX, newY, currentMapIndex)) {
                 return;
             }
 

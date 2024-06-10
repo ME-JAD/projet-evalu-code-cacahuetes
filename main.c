@@ -52,12 +52,18 @@ int main() {
     clearScreen();
     displayMap(map);
 
-    // Variables pour gérer le déplacement périodique des ânes
-    clock_t lastMoveTime = clock();
-    const double moveInterval = 0.5 * CLOCKS_PER_SEC; // Intervalle de mouvement de 0,5 seconde
 
     do {
-        // Vérifier si une touche a été pressée sans bloquer
+        input = _getch();
+        if (input == 'W' || input == 'w') {
+            break;
+        }
+        updateMapWithShrek(map, shrek, input, currentMapIndex);
+
+    clock_t lastMoveTime = clock();
+    const double moveInterval = 0.5 * CLOCKS_PER_SEC; 
+
+    do {
         if (_kbhit()) {
             input = _getch();
             if (input == 'W' || input == 'w') {
@@ -78,6 +84,10 @@ int main() {
                 }
             }
 
+        if (iterationCount % 2 == 0) {
+            updateMapWithDonkey(map, currentMapIndex);
+        }
+
             if (isShrekCollisionDonkey(map, shrek)) {
                 displayDefeatMenu();
                 break;
@@ -97,18 +107,17 @@ int main() {
             }
         }
 
-        // Gérer le déplacement périodique des ânes
         clock_t currentTime = clock();
         if ((currentTime - lastMoveTime) >= moveInterval) {
             moveDonkeysPeriodically(map);
             lastMoveTime = currentTime;
         }
 
-        usleep(10000); // Pause courte pour limiter l'utilisation du CPU
+        usleep(10000); 
 
     } while (1);
 
-    // Libérer la mémoire
+
     free(shrek);
     for (int i = 0; i < map->height; ++i) {
         for (int j = 0; j < map->width; ++j) {
