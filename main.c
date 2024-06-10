@@ -147,7 +147,6 @@ int main() {
                 pthread_join(musicThread, NULL);
 
                 displayDefeatMenu();
-                // Jouer de la musique de défaite
                 char* defeatMusicFile = "../audio/ane.wav";
                 pthread_t defeatMusicThread;
                 int defeatMusicResult = pthread_create(&defeatMusicThread, NULL, playAudioOnce, (void*)defeatMusicFile);
