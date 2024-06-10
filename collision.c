@@ -20,4 +20,3 @@ int checkCollision(Map *map, int newX, int newY, unsigned int currentMapIndex) {
     }
     return 0;
 }
-

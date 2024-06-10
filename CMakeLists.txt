@@ -21,4 +21,6 @@ add_executable(Code-Cacahuetes main.c
         collision.h
         flag.c
         flag.h
+        music.c
+        music.h
 )

@@ -2,9 +2,12 @@
 #include <unistd.h>
 #include <time.h>
 
+
+
 #include "menu.h"
 #include "move.h"
 #include "map.h"
+#include "music.h"
 
 void clearScreen() {
     printf("\033[H\033[J");
@@ -13,12 +16,23 @@ void clearScreen() {
 int main() {
     system("chcp 65001");
 
+    pthread_t musicThread;
+    char* backgroundMusicFile = "../audio/Saving_Donkeys_Ass.wav";
+    int result = pthread_create(&musicThread, NULL, playMusic, (void*)backgroundMusicFile);
+    if (result != 0) {
+        printf("Error creating music thread\n");
+        return 1;
+    }
+
     displayMenu();
 
     char menuSelection = getMenuSelection();
 
     if (menuSelection == QUIT_IS_SELECTED) {
         printf("\nExiting the game...\n");
+        keepPlayingMusic = false;
+        system("taskkill /IM powershell.exe /F");
+        pthread_join(musicThread, NULL);
         return 0;
     }
 
@@ -33,9 +47,11 @@ int main() {
     char input;
     unsigned int scaredChildrenCount = 0;
 
-    Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY, &gingyX, &gingyY,
-                               currentMapIndex, scaredChildrenCount);
+    Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY, &gingyX, &gingyY, currentMapIndex, scaredChildrenCount);
     if (!map) {
+        keepPlayingMusic = false; // Arrêter la musique
+        system("taskkill /IM powershell.exe /F");
+        pthread_join(musicThread, NULL);
         return 1;
     }
 
@@ -53,67 +69,114 @@ int main() {
     clearScreen();
     displayMap(map);
 
-    do {
-        input = _getch();
-        if (input == 'W' || input == 'w') {
-            break;
-        }
-        updateMapWithShrek(map, shrek, input, currentMapIndex);
 
-        clock_t lastMoveTime = clock();
-        const double moveInterval = 0.5 * CLOCKS_PER_SEC;
+    clock_t lastMoveTime = clock();
+    const double moveInterval = 0.5 * CLOCKS_PER_SEC;
 
-        do {
-            if (_kbhit()) {
-                input = _getch();
-                if (input == 'W' || input == 'w') {
-                    break;
-                }
-                updateMapWithShrek(map, shrek, input, currentMapIndex);
+    bool gameRunning = true;
+    while (gameRunning) {
 
-                if (isLevelComplete(map, currentMapIndex)) {
-                    scaredChildrenCount = 0;
-                    clearScaredChildrenBelowTheMap();
-                    currentMapIndex++;
+        if (_kbhit()) {
+            input = _getch();
+            if (input == 'W' || input == 'w') {
+                keepPlayingMusic = false;
+                system("taskkill /IM powershell.exe /F");
+                pthread_join(musicThread, NULL);
+                gameRunning = false;
+                break;
+            }
+            updateMapWithShrek(map, shrek, input, currentMapIndex);
 
-                    if (currentMapIndex < sizeof(filenames) / sizeof(filenames[0])) {
-                        loadNextMap(&map, shrek, filenames[currentMapIndex]);
-                    } else {
-                        displayVictoryMenu();
-                        break;
+            if (isLevelComplete(map, currentMapIndex)) {
+                scaredChildrenCount = 0;
+                clearScaredChildrenBelowTheMap();
+                currentMapIndex++;
+
+                if (currentMapIndex < sizeof(filenames) / sizeof(filenames[0])) {
+                    loadNextMap(&map, shrek, filenames[currentMapIndex]);
+                } else {
+                    keepPlayingMusic = false;
+                    system("taskkill /IM powershell.exe /F");
+                    pthread_join(musicThread, NULL);
+
+                    char* victoryMusicFile = "../audio/victory.wav";
+                    pthread_t victoryMusicThread;
+                    int victoryMusicResult = pthread_create(&victoryMusicThread, NULL, playAudioOnce, (void*)victoryMusicFile);
+                    if (victoryMusicResult != 0) {
+                        printf("Error creating defeat music thread\n");
                     }
-                }
 
-                if (isShrekCollisionDonkey(map, shrek)) {
-                    displayDefeatMenu();
+                    displayVictoryMenu();
+
+                    if (victoryMusicResult == 0) {
+                        pthread_join(victoryMusicThread, NULL);
+                    }
+
+                    gameRunning = false;
                     break;
                 }
+            }
 
-                if (isShrekEatingGingy(map)) {
-                    activateSpeedBoost(map->shrek);
+            if (isShrekCollisionDonkey(map, shrek)) {
+                keepPlayingMusic = false;
+                system("taskkill /IM powershell.exe /F");
+                pthread_join(musicThread, NULL);
+
+                displayDefeatMenu();
+                // Jouer de la musique de défaite
+                char* defeatMusicFile = "../audio/ane.wav";
+                pthread_t defeatMusicThread;
+                int defeatMusicResult = pthread_create(&defeatMusicThread, NULL, playAudioOnce, (void*)defeatMusicFile);
+                if (defeatMusicResult != 0) {
+                    printf("Error creating defeat music thread\n");
                 }
 
-                if (isShrekScaringAChild(map, currentMapIndex)) {
-                    scaredChildrenCount++;
-                    displayScaredChildrenBelowTheMap(scaredChildrenCount);
+                if (defeatMusicResult == 0) {
+                    pthread_join(defeatMusicThread, NULL);
                 }
 
-                if (shrek->speed > 1 && difftime(time(NULL), shrek->boostStartTime) >= 5) {
-                    shrek->speed = 1;
+                gameRunning = false;
+                break;
+            }
+
+            if (isShrekEatingGingy(map)) {
+
+                activateSpeedBoost(map->shrek);
+
+                char* boostSoundFile = "../audio/gingy.wav";
+                pthread_t boostSoundThread;
+                int boostSoundResult = pthread_create(&boostSoundThread, NULL, playAudioOnce, (void*)boostSoundFile);
+                if (boostSoundResult != 0) {
+                    printf("Error creating scared child sound thread\n");
+                }
+
+            }
+
+            if (isShrekScaringAChild(map, currentMapIndex)) {
+                scaredChildrenCount++;
+                displayScaredChildrenBelowTheMap(scaredChildrenCount);
+
+                char* scaredChildSoundFile = "../audio/enfant.wav";
+                pthread_t scaredChildSoundThread;
+                int scaredChildSoundResult = pthread_create(&scaredChildSoundThread, NULL, playAudioOnce, (void*)scaredChildSoundFile);
+                if (scaredChildSoundResult != 0) {
+                    printf("Error creating scared child sound thread\n");
                 }
             }
 
-            clock_t currentTime = clock();
-            if ((currentTime - lastMoveTime) >= moveInterval) {
-                moveDonkeysPeriodically(map, currentMapIndex);
-                lastMoveTime = currentTime;
+            if (shrek->speed > 1 && difftime(time(NULL), shrek->boostStartTime) >= 5) {
+                shrek->speed = 1;
             }
+        }
 
-            usleep(10000);
+        clock_t currentTime = clock();
+        if ((currentTime - lastMoveTime) >= moveInterval) {
+            moveDonkeysPeriodically(map, currentMapIndex);
+            lastMoveTime = currentTime;
+        }
 
-        } while (1);
-
-    } while (1);
+        usleep(10000);
+    }
 
     free(shrek);
     for (int i = 0; i < map->height; ++i) {
