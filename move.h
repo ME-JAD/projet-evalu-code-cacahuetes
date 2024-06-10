@@ -10,10 +10,10 @@
 #define SPEED_BOOST 3
 #define NUMBER_OF_POSSIBLE_DIRECTIONS 4
 
-void moveShrek(Map *map, char direction);
+void moveShrek(Map *map, char direction, unsigned int currentMapIndex);
 
 void activateSpeedBoost(Shrek *shrek);
 
-void moveDonkeyRandomly(Map *map);
+void moveDonkeyRandomly(Map *map, unsigned int currentMapIndex);
 
 #endif //CODE_CACAHUETES_MOVE_H

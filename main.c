@@ -57,7 +57,7 @@ int main() {
         if (input == 'W' || input == 'w') {
             break;
         }
-        updateMapWithShrek(map, shrek, input);
+        updateMapWithShrek(map, shrek, input, currentMapIndex);
 
         if (isLevelComplete(map, currentMapIndex)) {
             scaredChildrenCount = 0;
@@ -73,7 +73,7 @@ int main() {
         }
 
         if (iterationCount % 2 == 0) {
-            updateMapWithDonkey(map);
+            updateMapWithDonkey(map, currentMapIndex);
         }
 
         if (isShrekCollisionDonkey(map, shrek)) {
