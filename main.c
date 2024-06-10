@@ -1,13 +1,37 @@
 #include <conio.h>
 #include <unistd.h>
 #include <time.h>
-
-
+#include <stdbool.h>
+#include <pthread.h>
+#include <stdio.h>
 
 #include "menu.h"
 #include "move.h"
 #include "map.h"
-#include "music.h"
+
+bool keepPlayingMusic = true;
+
+void* playMusic(void* arg) {
+    char* filename = (char*)arg;
+    char command[256];
+
+    while (keepPlayingMusic) {
+        snprintf(command, sizeof(command), "powershell -Command \"(New-Object Media.SoundPlayer '%s').PlaySync()\"", filename);
+        system(command);
+    }
+
+    return NULL;
+}
+
+void* playAudioOnce(void* arg) {
+    char* filename = (char*)arg;
+    char command[256];
+
+    snprintf(command, sizeof(command), "powershell -Command \"(New-Object Media.SoundPlayer '%s').PlaySync()\"", filename);
+    system(command);
+
+    return NULL;
+}
 
 void clearScreen() {
     printf("\033[H\033[J");
