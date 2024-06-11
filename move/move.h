@@ -4,6 +4,7 @@
 
 #include "../characters/shrek/shrek.h"
 #include "../map/map.h"
+#include "../collisions/collisions.h"
 
 #ifndef CODE_CACAHUETES_MOVE_H
 #define CODE_CACAHUETES_MOVE_H
