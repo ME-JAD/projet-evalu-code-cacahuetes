@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+
 #include "../sprite.h"
 
 #ifndef CODE_CACAHUETES_ANE_H
