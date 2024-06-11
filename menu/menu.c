@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
-
 #include "menu.h"
 
 void loadMenuFromFile(const char *filename) {

@@ -4,10 +4,8 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <stdio.h>
-
 #include "menu/menu.h"
 #include "move/move.h"
-#include "map/map.h"
 
 bool keepPlayingMusic = true;
 
