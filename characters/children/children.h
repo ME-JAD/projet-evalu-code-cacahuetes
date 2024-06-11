@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "sprite.h"
+#include "../sprite.h"
 
 #ifndef CODE_CACAHUETES_CHILDREN_H
 #define CODE_CACAHUETES_CHILDREN_H

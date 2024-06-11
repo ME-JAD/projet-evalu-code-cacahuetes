@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "shrek.h"
-#include "ane.h"
-#include "gingy.h"
-#include "children.h"
-#include "flag.h"
+#include "../characters/shrek/shrek.h"
+#include "../characters/donkey/donkey.h"
+#include "../characters/gingy/gingy.h"
+#include "../characters/children/children.h"
+#include "../flag/flag.h"
 
 #define CELL_SIZE 5
 #define BORDER_MAP_SPRITE '#'

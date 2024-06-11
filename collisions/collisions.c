@@ -1,4 +1,4 @@
-#include "collision.h"
+#include "collisions.h"
 
 int checkCollision(Map *map, int newX, int newY, unsigned int currentMapIndex) {
     for (int row = 0; row < SPRITE_HEIGHT; ++row) {

@@ -1,5 +1,5 @@
 #include "map.h"
-#include "move.h"
+#include "../move/move.h"
 
 Map *createMap(unsigned int width, unsigned int height) {
     Map *newMap = (Map *) malloc(sizeof(Map));

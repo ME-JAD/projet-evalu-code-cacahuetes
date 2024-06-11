@@ -5,9 +5,9 @@
 #include <pthread.h>
 #include <stdio.h>
 
-#include "menu.h"
-#include "move.h"
-#include "map.h"
+#include "menu/menu.h"
+#include "move/move.h"
+#include "map/map.h"
 
 bool keepPlayingMusic = true;
 

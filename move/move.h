@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "shrek.h"
-#include "map.h"
+#include "../characters/shrek/shrek.h"
+#include "../map/map.h"
 
 #ifndef CODE_CACAHUETES_MOVE_H
 #define CODE_CACAHUETES_MOVE_H

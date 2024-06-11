@@ -1,5 +1,5 @@
 #include "move.h"
-#include "collision.h"
+#include "../collisions/collisions.h"
 
 void moveShrek(Map *map, char direction, unsigned int currentMapIndex) {
     int deltaX = 0;

@@ -1,4 +1,4 @@
-#include "ane.h"
+#include "donkey.h"
 
 Donkey *createDonkey() {
     Donkey *newDonkey = (Donkey *) malloc(sizeof(Donkey));

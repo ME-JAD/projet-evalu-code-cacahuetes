@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include "sprite.h"
+#include "../sprite.h"
 
 #ifndef CODE_CACAHUETES_SHREK_H
 #define CODE_CACAHUETES_SHREK_H
