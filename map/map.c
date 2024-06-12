@@ -18,7 +18,6 @@ Map *createMap(unsigned int width, unsigned int height) {
         }
     }
     newMap->shrek = createShrek();
-    newMap->shrek = createShrek();
     for (int i = 0; i < NUMBER_MAX_OF_DONKEYS; ++i) {
         newMap->donkeys[i] = NULL;
     }
@@ -39,6 +38,7 @@ void displayMap(Map *map) {
 
                     int shrekX = map->shrek->positionX;
                     int shrekY = map->shrek->positionY;
+
                     if (mapX >= shrekX && mapX < shrekX + SPRITE_WIDTH &&
                         mapY >= shrekY && mapY < shrekY + SPRITE_HEIGHT) {
                         int spriteRow = mapY - shrekY;

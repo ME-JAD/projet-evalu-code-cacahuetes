@@ -71,7 +71,7 @@ int main() {
 
     Map *map = loadMapFromFile(filenames[currentMapIndex], &startX, &startY, &flagX, &flagY, &gingyX, &gingyY, currentMapIndex, scaredChildrenCount);
     if (!map) {
-        keepPlayingMusic = false; // Arrêter la musique
+        keepPlayingMusic = false;
         system("taskkill /IM powershell.exe /F");
         pthread_join(musicThread, NULL);
         return 1;
@@ -90,7 +90,6 @@ int main() {
 
     clearScreen();
     displayMap(map);
-
 
     clock_t lastMoveTime = clock();
     const double moveInterval = 0.5 * CLOCKS_PER_SEC;
